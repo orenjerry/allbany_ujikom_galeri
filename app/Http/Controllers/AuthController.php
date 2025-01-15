@@ -12,7 +12,11 @@ class AuthController extends Controller
 {
     public function showLoginForm()
     {
-        return view('auth.login');
+        if (!Session::has('user_id')) {
+            return view('auth.login');
+        } else {
+            return redirect('dashboard');
+        }
     }
 
     public function login(Request $request)
@@ -70,5 +74,12 @@ class AuthController extends Controller
                 ->withInput()
                 ->withErrors(['error' => 'Registration failed. Please try again.']);
         }
+    }
+
+    public function doLogout()
+    {
+        Session::flush();
+        Session::save();
+        return redirect('/auth/login');
     }
 }
