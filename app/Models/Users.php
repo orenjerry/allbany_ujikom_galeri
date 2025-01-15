@@ -11,4 +11,9 @@ class Users extends Model
     protected $fillable = ['id_role', 'username', 'email', 'password', 'nama_lengkap', 'alamat'];
     protected $hidden = 'password';
     public $timestamps = true;
+
+    public function role()
+    {
+        return $this->belongsTo(Role::class, 'id_role');
+    }
 }

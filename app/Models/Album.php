@@ -10,4 +10,14 @@ class Album extends Model
     public $timestamps = true;
     protected $table = 'allbany_album';
     protected $fillable = ['id_user', 'nama_album'];
+
+    public function user()
+    {
+        return $this->belongsTo(Users::class, 'id_user');
+    }
+
+    public function foto()
+    {
+        return $this->hasMany(Foto::class, 'id_album');
+    }
 }
