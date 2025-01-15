@@ -19,7 +19,6 @@
                             </svg>
                         </div>
                     </div>
-
                 </div>
             @endfor
         </div>
