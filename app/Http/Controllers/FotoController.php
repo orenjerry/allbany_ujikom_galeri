@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Album;
 use App\Models\Foto;
 use App\Models\Komen;
 use App\Models\Like;
@@ -17,6 +18,42 @@ class FotoController extends Controller
         $foto->is_liked = $foto->like->contains('id_user', Session::get('user_id')) ? true : false;
 
         return view('foto.index', compact('foto'));
+    }
+
+    public function showAddFoto()
+    {
+        $album = Album::where('id_user', Session::get('user_id'))->get();
+        return view('foto.addFoto', compact('album'));
+    }
+
+    public function addFoto(Request $request)
+    {
+        $validate = $request->validate([
+            'file' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:5120',
+            'judul' => 'required',
+            'deskripsi' => 'required',
+            'album' => 'required'
+        ]);
+
+        if (!$validate) {
+            return redirect()->back()->withErrors($validate);
+        }
+
+        $userId = Session::get('user_id');
+
+        $file = $request->file('file');
+        $fileName = str()->random(19) . '.' . $file->getClientOriginalExtension();
+        $file->move('images', $fileName);
+
+        Foto::create([
+            'id_user' => $userId,
+            'id_album' => $request->album,
+            'lokasi_file' => 'images/'.$fileName,
+            'judul_foto' => $request->judul,
+            'deskripsi_foto' => $request->deskripsi
+        ]);
+
+        return redirect()->route('dashboard');
     }
 
     public function toggleLike($id)

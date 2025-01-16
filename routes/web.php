@@ -28,7 +28,7 @@ Route::prefix('/album')->group(function () {
 
 Route::prefix('/foto')->group(function () {
     Route::get('/add', [FotoController::class, 'showAddFoto']);
-    Route::post('/add', [FotoController::class, 'addFoto']);
+    Route::post('/add', [FotoController::class, 'addFoto'])->name('addFoto');
     Route::get('/{id}', [FotoController::class, 'showDetailFoto']);
     Route::post('/{id}/like', [FotoController::class, 'toggleLike'])->name('toggleLike');
     Route::post('/{id}/comment', [FotoController::class, 'addComment'])->name('addComment');

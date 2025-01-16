@@ -11,7 +11,7 @@ class DashboardController extends Controller
 {
     public function showDashboard()
     {
-        $foto = Foto::with('user')->withCount('like')->with('like')->get()->map(function ($foto) {
+        $foto = Foto::with('user')->withCount('like')->with('like')->inRandomOrder()->get()->map(function ($foto) {
             $foto->is_liked = $foto->like->contains('id_user', Session::get('user_id')) ? true : false;
             return $foto;
         });
