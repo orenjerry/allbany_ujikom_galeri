@@ -15,7 +15,7 @@ Route::prefix('/auth')->group(function () {
 });
 
 Route::get('/auth/logout', [AuthController::class, 'doLogout']);
-Route::get('/dashboard', [DashboardController::class, 'showDashboard']);
+Route::get('/dashboard', [DashboardController::class, 'showDashboard'])->name('dashboard');
 
 Route::prefix('/album')->group(function () {
     Route::get('/', [AlbumController::class, 'showAlbum']);
@@ -26,3 +26,5 @@ Route::prefix('/album')->group(function () {
     Route::post('/{id}/edit', [AlbumController::class, 'editAlbum']);
     Route::get('/{id}/delete', [AlbumController::class, 'deleteAlbum']);
 });
+
+Route::post('/foto/{id}/like', [DashboardController::class, 'toggleLike'])->name('toggleLike');

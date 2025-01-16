@@ -18,6 +18,8 @@
         @include('layouts.header')
     @endif
     @yield('content')
+
+    @stack('scripts')
 </body>
 
 </html>

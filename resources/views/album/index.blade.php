@@ -1,4 +1,5 @@
 @extends('layouts.master')
+@section('title', 'My Albums')
 
 @section('content')
 <div class="container-fluid">
