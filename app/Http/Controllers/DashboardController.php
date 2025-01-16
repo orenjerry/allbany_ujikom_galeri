@@ -19,21 +19,4 @@ class DashboardController extends Controller
         return view('dashboard', compact('foto'));
     }
 
-    public function toggleLike($id)
-    {
-        $userId = Session::get('user_id');
-
-        $existingLike = Like::where('id_foto', $id)->where('id_user', $userId)->first();
-
-        if ($existingLike) {
-            $existingLike->delete();
-        } else {
-            Like::create([
-                'id_foto' => $id,
-                'id_user' => $userId
-            ]);
-        }
-
-        return redirect()->route('dashboard');
-    }
 }

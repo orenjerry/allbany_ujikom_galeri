@@ -3,6 +3,7 @@
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\AlbumController;
+use App\Http\Controllers\FotoController;
 use Illuminate\Support\Facades\Route;
 
 Route::redirect('/', '/auth/login');
@@ -22,9 +23,13 @@ Route::prefix('/album')->group(function () {
     Route::get('/create', [AlbumController::class, 'showCreateAlbum']);
     Route::post('/create', [AlbumController::class, 'createAlbum']);
     Route::get('/{id}', [AlbumController::class, 'showDetailAlbum']);
-    Route::get('/{id}/edit', [AlbumController::class, 'showEditAlbum']);
-    Route::post('/{id}/edit', [AlbumController::class, 'editAlbum']);
-    Route::get('/{id}/delete', [AlbumController::class, 'deleteAlbum']);
 });
 
-Route::post('/foto/{id}/like', [DashboardController::class, 'toggleLike'])->name('toggleLike');
+
+Route::prefix('/foto')->group(function () {
+    Route::get('/add', [FotoController::class, 'showAddFoto']);
+    Route::post('/add', [FotoController::class, 'addFoto']);
+    Route::get('/{id}', [FotoController::class, 'showDetailFoto']);
+    Route::post('/{id}/like', [FotoController::class, 'toggleLike'])->name('toggleLike');
+    Route::post('/{id}/comment', [FotoController::class, 'addComment'])->name('addComment');
+});
