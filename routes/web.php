@@ -19,9 +19,9 @@ Route::get('/auth/logout', [AuthController::class, 'doLogout']);
 Route::get('/dashboard', [DashboardController::class, 'showDashboard'])->name('dashboard');
 
 Route::prefix('/album')->group(function () {
-    Route::get('/', [AlbumController::class, 'showAlbum']);
-    Route::get('/create', [AlbumController::class, 'showCreateAlbum']);
-    Route::post('/create', [AlbumController::class, 'createAlbum']);
+    Route::get('/', [AlbumController::class, 'showAlbum'])->name('album');
+    Route::get('/create', [AlbumController::class, 'showCreateAlbum'])->name('showCreateAlbum');
+    Route::post('/create', [AlbumController::class, 'createAlbum'])->name('createAlbum');
     Route::get('/{id}', [AlbumController::class, 'showDetailAlbum']);
 });
 
