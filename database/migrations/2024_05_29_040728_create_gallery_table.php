@@ -34,6 +34,7 @@ return new class extends Migration
             $table->foreign('id_user')->references('id')->on('allbany_user')->onDelete('cascade');
             $table->string('nama_album');
             $table->text('deskripsi')->nullable();
+            $table->timestamps();
         });
         Schema::create('allbany_foto', function (Blueprint $table) {
             $table->bigIncrements('id');
