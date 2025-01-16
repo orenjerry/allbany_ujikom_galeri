@@ -18,6 +18,12 @@ class AlbumController extends Controller
         return view('album.index', compact('album'));
     }
 
+    public function showAlbumDetail($id)
+    {
+        $album = Album::where('id', $id)->with('foto')->first();
+        return view('album.albumDetail', compact('album'));
+    }
+
     public function showCreateAlbum()
     {
         return view('album.createAlbum');

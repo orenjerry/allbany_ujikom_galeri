@@ -24,14 +24,16 @@
                 <div class="flex flex-wrap row items-center justify-center">
                     @forelse($album ?? [] as $albums)
                         <div class="mx-3 mb-4">
-                            <div class="card">
-                                <img src="{{ $albums->cover_image ?? asset('images/default-album.jpg') }}"
-                                    class="card-img-top w-[300px] h-auto max-h-[300px]" alt="Album Cover">
-                                <div class="card-body text-center">
-                                    <h5 class="card-title text-center">{{ $albums->name }}</h5>
-                                    <a href="#{{-- {{ route('album.show', $album->id) }} --}}" class="btn btn-info">{{ $albums->nama_album }}</a>
+                            <a href="#{{-- {{ route('album.show', $album->id) }} --}}">
+                                <div class="card rounded-lg h-[350px]">
+                                    <img src="{{ $albums->cover_image ?? asset('images/default-album.jpg') }}"
+                                        class="card-img-top w-[300px] h-auto max-h-[300px] rounded-xl" alt="Album Cover">
+                                    <div class="card-body text-center my-3">
+                                        <h5 class="card-title text-center">{{ $albums->name }}</h5>
+                                        <p>{{ $albums->nama_album }}</p>
+                                    </div>
                                 </div>
-                            </div>
+                            </a>
                         </div>
                     @empty
                         <div class="col-12">
