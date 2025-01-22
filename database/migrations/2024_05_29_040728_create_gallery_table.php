@@ -26,6 +26,7 @@ return new class extends Migration
             $table->string('password');
             $table->string('nama_lengkap');
             $table->string('alamat');
+            $table->boolean('accepted')->default(false);
             $table->timestamps();
         });
         Schema::create('allbany_album', function (Blueprint $table) {

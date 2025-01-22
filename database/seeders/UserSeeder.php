@@ -14,8 +14,8 @@ class UserSeeder extends Seeder
     public function run(): void
     {
         $users = [
-            ['username' => 'Superadmin', 'email' => 'superadmin@gmail.com', 'password' => bcrypt('password'), 'id_role' => 1, 'nama_lengkap' => 'Superadmin', 'alamat' => 'Jl. Superadmin'],
-            ['username' => 'User', 'email' => 'user@gmail.com', 'password' => bcrypt('password'), 'id_role' => 2, 'nama_lengkap' => 'User', 'alamat' => 'Jl. User'],
+            ['username' => 'Superadmin', 'email' => 'superadmin@gmail.com', 'password' => bcrypt('password'), 'id_role' => 1, 'nama_lengkap' => 'Superadmin', 'alamat' => 'Jl. Superadmin', 'accepted' => true],
+            ['username' => 'User', 'email' => 'user@gmail.com', 'password' => bcrypt('password'), 'id_role' => 2, 'nama_lengkap' => 'User', 'alamat' => 'Jl. User', 'accepted' => true],
         ];
 
         foreach ($users as $user) {

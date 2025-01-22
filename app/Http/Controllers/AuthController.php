@@ -29,6 +29,11 @@ class AuthController extends Controller
         $user = Users::where('username', $request->username)->first();
 
         if ($user && Hash::check($request->password, $user->password)) {
+            if (!$user->accepted) {
+                return back()
+                    ->withErrors(['username' => 'Akun-mu belum diterima. Harap tunggu admin untuk menyetujui akun-mu.'])
+                    ->withInput($request->only('username'));
+            }
             Session::put('user_id', $user->id);
             Session::put('username', $user->username);
             Session::put('email', $user->email);
@@ -68,11 +73,11 @@ class AuthController extends Controller
             ]);
 
             return redirect('/auth/login')
-                ->with('success', 'Registration successful! Please login now.');
+                ->with('success', 'Registrasi sukses, harap tunggu admin untuk menyetujui akun anda.');
         } catch (\Exception $e) {
             return back()
                 ->withInput()
-                ->withErrors(['error' => 'Registration failed. Please try again.']);
+                ->withErrors(['error' => 'Registrasi gagal! Harap coba lagi.']);
         }
     }
 
