@@ -40,6 +40,9 @@ Route::middleware([CheckLoginStatus::class])->group(function () {
         Route::put('/{id}/edit', [FotoController::class, 'editFoto'])->name('editFoto');
     });
 
+    Route::get('/profile', [DashboardController::class, 'showProfile'])->name('profile');
+    Route::put('/profile', [DashboardController::class, 'editProfile'])->name('editProfile');
+
     Route::get('/admin/dashboard', function() {
         return view('welcome');
     })->name('admin.dashboard');
