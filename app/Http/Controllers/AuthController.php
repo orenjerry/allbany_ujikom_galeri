@@ -29,9 +29,13 @@ class AuthController extends Controller
         $user = Users::where('username', $request->username)->first();
 
         if ($user && Hash::check($request->password, $user->password)) {
-            if (!$user->accepted) {
+            if ($user->accepted == 0) {
                 return back()
                     ->withErrors(['username' => 'Akun-mu belum diterima. Harap tunggu admin untuk menyetujui akun-mu.'])
+                    ->withInput($request->only('username'));
+            } elseif ($user->accepted == 'rejected') {
+                return back()
+                    ->withErrors(['username' => 'Akun-mu ditolak. Harap membuat akun kembali.'])
                     ->withInput($request->only('username'));
             }
             Session::put('user_id', $user->id);

@@ -33,7 +33,7 @@ class DashboardController extends Controller
         $user = Users::findOrFail($id);
         if ($request->action == 'approve') {
             $approve = 1;
-        } else {
+        } elseif ($request->action == 'reject') {
             $approve = 'rejected';
         }
         try {

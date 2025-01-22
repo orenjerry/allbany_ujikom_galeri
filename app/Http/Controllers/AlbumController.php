@@ -37,9 +37,9 @@ class AlbumController extends Controller
         return view('album.createAlbum');
     }
 
-    public function createAlbum()
+    public function createAlbum(Request $request)
     {
-        $validate = request()->validate([
+        $validate = $request->validate([
             'nama_album' => 'required',
             'deskripsi' => 'required',
         ]);
@@ -49,7 +49,7 @@ class AlbumController extends Controller
         }
 
         // Check if nama album is exist :D
-        $album = Album::where('nama_album', request('nama_album'))->first();
+        $album = Album::where('nama_album', $request->nama_album)->where('id_user', Session::get('user_id'))->first();
         if ($album) {
             return redirect()->back()->withErrors([
                 'nama_album' => 'Nama album sudah ada',
@@ -58,10 +58,34 @@ class AlbumController extends Controller
 
         Album::create([
             'id_user' => Session::get('user_id'),
-            'nama_album' => request('nama_album'),
-            'deskripsi' => request('deskripsi'),
+            'nama_album' => $request->nama_album,
+            'deskripsi' => $request->deskripsi,
         ]);
 
         return redirect()->route('album');
+    }
+
+    public function editAlbum(Request $request, $id)
+    {
+        $validate = $request->validate([
+            'nama_album' => 'required',
+            'deskripsi' => 'required',
+        ]);
+
+        if (!$validate) {
+            return redirect()->back()->withErrors($validate);
+        }
+
+        $album = Album::findOrFail($id);
+        if ($album->id_user != Session::get('user_id')) {
+            return redirect()->route('album');
+        }
+
+        $album->update([
+            'nama_album' => $request->nama_album,
+            'deskripsi' => $request->deskripsi,
+        ]);
+
+        return redirect()->route('showDetailAlbum', ['id' => $id]);
     }
 }

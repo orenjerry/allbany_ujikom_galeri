@@ -27,6 +27,7 @@ Route::middleware([CheckLoginStatus::class])->group(function () {
         Route::get('/create', [AlbumController::class, 'showCreateAlbum'])->name('showCreateAlbum');
         Route::post('/create', [AlbumController::class, 'createAlbum'])->name('createAlbum');
         Route::get('/{id}', [AlbumController::class, 'showDetailAlbum'])->name('showDetailAlbum');
+        Route::put('/{id}/edit', [AlbumController::class, 'editAlbum'])->name('editAlbum');
     });
 
 
