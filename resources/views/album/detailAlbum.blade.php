@@ -6,10 +6,10 @@
 @section('content')
     <div class="container-fluid mx-auto px-6 py-8">
         <div class="grid grid-cols-6 gap-4">
-            @foreach ($foto as $f)
+            @foreach ($album->foto as $f)
                 <div>
                     <button onclick="window.location.href='/foto/{{ $f->id }}'" class="w-full h-auto max-h-[300px] object-cover rounded-lg shadow-md">
-                        <img src="{{ $f->lokasi_file }}" alt="Image {{ $f->id }}" class="w-full h-auto max-h-[300px] object-cover rounded-lg shadow-md">
+                        <img src="{{ asset($f->lokasi_file) }}" alt="Image {{ $f->id }}" class="w-full h-auto max-h-[300px] object-cover rounded-lg shadow-md">
                     </button>
                     <div class="-mt-3 flex justify-between items-center">
                         <h2 class="text-lg font-semibold mt-4">{{ '@' . $f->user->username }}</h2>

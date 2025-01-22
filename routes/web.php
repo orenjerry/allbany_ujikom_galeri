@@ -22,7 +22,7 @@ Route::prefix('/album')->group(function () {
     Route::get('/', [AlbumController::class, 'showAlbum'])->name('album');
     Route::get('/create', [AlbumController::class, 'showCreateAlbum'])->name('showCreateAlbum');
     Route::post('/create', [AlbumController::class, 'createAlbum'])->name('createAlbum');
-    Route::get('/{id}', [AlbumController::class, 'showDetailAlbum']);
+    Route::get('/{id}', [AlbumController::class, 'showDetailAlbum'])->name('showDetailAlbum');
 });
 
 

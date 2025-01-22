@@ -18,10 +18,18 @@ class AlbumController extends Controller
         return view('album.index', compact('album'));
     }
 
-    public function showAlbumDetail($id)
+    public function showDetailAlbum($id)
     {
-        $album = Album::where('id', $id)->with('foto')->first();
-        return view('album.albumDetail', compact('album'));
+        $album = Album::where('id', $id)->with('user')->first();
+        $album->foto->map(function ($foto) {
+            $foto->is_liked = $foto->like->contains('id_user', Session::get('user_id')) ? true : false;
+            $foto->like_count = $foto->like->count();
+            return $foto;
+        });
+        if ($album->id_user != Session::get('user_id')) {
+            return redirect()->route('album');
+        }
+        return view('album.detailAlbum', compact('album'));
     }
 
     public function showCreateAlbum()

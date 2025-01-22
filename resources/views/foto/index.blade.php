@@ -3,9 +3,9 @@
 
 @section('content')
     <div class="container mx-auto px-6 py-8 flex justify-center">
-        <div class="flex bg-slate-300 rounded-lg shadow-lg w-1/2">
+        <div class="flex bg-slate-300 rounded-lg shadow-lg">
             <img src="../{{ $foto->lokasi_file }}" alt="Image {{ $foto->id }}"
-                class="w-[300px] h-auto max-h-[500px] object-cover rounded-lg shadow-md">
+                class="w-auto max-w-[900px] h-auto max-h-[700px] object-cover rounded-lg shadow-md">
             <div class="flex flex-col ml-4 mt-5">
                 <div class="flex items-center">
                     <span class="text-[20px] text-gray-600" id="like-{{ $foto->id }}">{{ $foto->like_count }}</span>

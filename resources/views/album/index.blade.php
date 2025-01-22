@@ -24,7 +24,7 @@
                 <div class="flex flex-wrap row items-center justify-center">
                     @forelse($album ?? [] as $albums)
                         <div class="mx-3 mb-4">
-                            <a href="#{{-- {{ route('album.show', $album->id) }} --}}">
+                            <a href="{{ route('showDetailAlbum', $albums->id) }}">
                                 <div class="card rounded-lg h-[350px]">
                                     <img src="{{ $albums->cover_image ?? asset('images/default-album.jpg') }}"
                                         class="card-img-top w-[300px] h-auto max-h-[300px] rounded-xl" alt="Album Cover">
