@@ -17,7 +17,9 @@ class FotoController extends Controller
         // dd($foto);
         $foto->is_liked = $foto->like->contains('id_user', Session::get('user_id')) ? true : false;
 
-        return view('foto.index', compact('foto'));
+        $album = Album::where('id_user', Session::get('user_id'))->get();
+
+        return view('foto.index', compact(['foto', 'album']));
     }
 
     public function showAddFoto()
@@ -82,6 +84,29 @@ class FotoController extends Controller
             'id_foto' => $id,
             'id_user' => $userId,
             'isi_komentar' => $request->komentar
+        ]);
+
+        return redirect()->back();
+    }
+
+    public function editFoto(Request $request, $id)
+    {
+        $foto = Foto::where('id', $id)->first();
+
+        $validate = $request->validate([
+            'judul_foto' => 'required',
+            'deskripsi_foto' => 'required',
+            'album' => 'required'
+        ]);
+
+        if (!$validate) {
+            return redirect()->back()->withErrors($validate);
+        }
+
+        $foto->update([
+            'judul_foto' => $request->judul_foto,
+            'deskripsi_foto' => $request->deskripsi_foto,
+            'id_album' => $request->album
         ]);
 
         return redirect()->back();

@@ -37,6 +37,7 @@ Route::middleware([CheckLoginStatus::class])->group(function () {
         Route::post('/{id}/like', [FotoController::class, 'toggleLike'])->name('toggleLike');
         Route::post('/{id}/comment', [FotoController::class, 'addComment'])->name('addComment');
         Route::delete('/{id}/delete', [FotoController::class, 'deleteFoto'])->name('deleteFoto');
+        Route::put('/{id}/edit', [FotoController::class, 'editFoto'])->name('editFoto');
     });
 
     Route::get('/admin/dashboard', function() {
