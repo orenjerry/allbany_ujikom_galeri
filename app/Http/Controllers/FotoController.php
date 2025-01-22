@@ -86,4 +86,20 @@ class FotoController extends Controller
 
         return redirect()->back();
     }
+
+    public function deleteFoto($id)
+    {
+        $foto = Foto::where('id', $id)->first();
+        $komen = Komen::where('id_foto', $id)->get();
+        $like = Like::where('id_foto', $id)->get();
+
+        $lokasi_foto = $foto->lokasi_file;
+        unlink(public_path($lokasi_foto));
+
+        $komen->each->delete();
+        $like->each->delete();
+        $foto->delete();
+
+        return redirect()->route('dashboard');
+    }
 }

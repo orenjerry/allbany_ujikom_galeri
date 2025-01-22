@@ -28,11 +28,41 @@
                             @endif
                         </button>
                     </form>
-                    <svg class="ml-3" height="20" role="img" viewBox="0 0 24 24" width="20">
-                        <path
-                            d="M12 9a3 3 0 1 0 0 6 3 3 0 0 0 0-6M3 9a3 3 0 1 0 0 6 3 3 0 0 0 0-6m18 0a3 3 0 1 0 0 6 3 3 0 0 0 0-6">
-                        </path>
-                    </svg>
+                    @if ($foto->id_user === session('user_id'))
+                        <button id="dropdownButton-{{ $foto->id }}" class="ml-3">
+                            <svg class="w-5 h-5" role="img" viewBox="0 0 24 24">
+                                <path
+                                    d="M12 9a3 3 0 1 0 0 6 3 3 0 0 0 0-6M3 9a3 3 0 1 0 0 6 3 3 0 0 0 0-6m18 0a3 3 0 1 0 0 6 3 3 0 0 0 0-6">
+                                </path>
+                            </svg>
+                        </button>
+                        <div class="relative pt-5">
+                            <div id="dropdownMenu-{{ $foto->id }}"
+                                class="hidden absolute right-0 mt-2 w-32 bg-white rounded-lg shadow-lg z-50">
+                                <a href="#{{-- {{ route('foto.edit', $foto->id) }} --}}"
+                                    class="block px-4 py-2 text-gray-700 hover:bg-gray-100">Edit</a>
+                                <form action="{{ route('deleteFoto', $foto->id) }}" method="POST">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button type="submit"
+                                        class="w-full text-left px-4 py-2 text-red-600 hover:bg-gray-100">Delete</button>
+                                </form>
+                            </div>
+                        </div>
+                        @push('scripts')
+                            <script>
+                                document.getElementById('dropdownButton-{{ $foto->id }}').addEventListener('click', function() {
+                                    document.getElementById('dropdownMenu-{{ $foto->id }}').classList.toggle('hidden');
+                                });
+
+                                window.addEventListener('click', function(e) {
+                                    if (!e.target.closest('#dropdownButton-{{ $foto->id }}')) {
+                                        document.getElementById('dropdownMenu-{{ $foto->id }}').classList.add('hidden');
+                                    }
+                                });
+                            </script>
+                        @endpush
+                    @endif
                 </div>
                 <div class="h-[400px] w-full mr-10 overflow-y-auto">
                     <div class="mt-3 font-semibold text-[30px]">
