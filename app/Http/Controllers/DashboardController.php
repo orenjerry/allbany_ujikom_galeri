@@ -6,6 +6,7 @@ use App\Models\Foto;
 use App\Models\Like;
 use App\Models\Users;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Session;
 
 class DashboardController extends Controller
@@ -18,6 +19,33 @@ class DashboardController extends Controller
         });
         // dd(Session::get('id'));
         return view('dashboard', compact('foto'));
+    }
+
+    public function showAdminDashboard()
+    {
+        $users = Users::where('accepted', '!=', 1)->get();
+        // dd($users);
+        return view('admin.dashboard', compact('users'));
+    }
+
+    public function approveUser(Request $request, $id)
+    {
+        $user = Users::findOrFail($id);
+        if ($request->action == 'approve') {
+            $approve = 1;
+        } else {
+            $approve = 'rejected';
+        }
+        try {
+            $user->update([
+                'accepted' => $approve,
+            ]);
+        } catch (\Exception $e) {
+            Log::error('Failed to update user status: ' . $e->getMessage());
+            return redirect()->back()->with('error', 'Failed to update user status');
+        }
+
+        return redirect()->route('admin.dashboard')->with('success', 'User status updated successfully');
     }
 
     public function showProfile()

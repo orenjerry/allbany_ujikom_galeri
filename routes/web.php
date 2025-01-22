@@ -43,7 +43,6 @@ Route::middleware([CheckLoginStatus::class])->group(function () {
     Route::get('/profile', [DashboardController::class, 'showProfile'])->name('profile');
     Route::put('/profile', [DashboardController::class, 'editProfile'])->name('editProfile');
 
-    Route::get('/admin/dashboard', function() {
-        return view('welcome');
-    })->name('admin.dashboard');
+    Route::get('/admin/dashboard', [DashboardController::class, 'showAdminDashboard'])->name('admin.dashboard');
+    Route::put('/admin/approve/{id}', [DashboardController::class, 'approveUser'])->name('admin.approve');
 });

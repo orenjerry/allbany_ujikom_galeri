@@ -8,8 +8,8 @@ use Illuminate\Database\Eloquent\Model;
 class Users extends Model
 {
     protected $table = 'allbany_user';
-    protected $fillable = ['id_role', 'username', 'email', 'password', 'nama_lengkap', 'alamat'];
-    protected $hidden = 'password';
+    protected $fillable = ['id_role', 'username', 'email', 'password', 'nama_lengkap', 'alamat', 'accepted'];
+    protected $hidden = ['password', 'accepted'];
     public $timestamps = true;
 
     public function role()
