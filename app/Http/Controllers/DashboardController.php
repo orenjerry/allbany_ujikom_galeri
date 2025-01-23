@@ -7,6 +7,7 @@ use App\Models\Like;
 use App\Models\Users;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Notification;
 use Illuminate\Support\Facades\Session;
 
 class DashboardController extends Controller
@@ -17,7 +18,7 @@ class DashboardController extends Controller
             $foto->is_liked = $foto->like->contains('id_user', Session::get('user_id')) ? true : false;
             return $foto;
         });
-        // dd(Session::get('id'));
+        // dd(Session::get('user_id'));
         return view('dashboard', compact('foto'));
     }
 
@@ -87,5 +88,16 @@ class DashboardController extends Controller
         ]);
 
         return redirect()->route('profile');
+    }
+
+    public function getNotifications()
+    {
+        $userId = Session::get('user_id');
+
+        // Fetch unread notifications for the user
+        $unreadNotifications = Users::find($userId)->unreadNotifications;
+        dd($unreadNotifications);
+
+        return view('your-view', compact('unreadNotifications'));
     }
 }
