@@ -23,6 +23,7 @@ Route::post('/auth/logout', [AuthController::class, 'doLogout'])->name('auth.log
 Route::middleware([CheckLoginStatus::class])->group(function () {
     Route::middleware([LoadNotifications::class])->group(function () {
         Route::get('/dashboard', [DashboardController::class, 'showDashboard'])->name('dashboard');
+        Route::get('/notifications/mark-as-read', [DashboardController::class, 'markAsRead'])->name('markAsRead');
 
         Route::prefix('/album')->group(function () {
             Route::get('/', [AlbumController::class, 'showAlbum'])->name('album');
@@ -36,7 +37,7 @@ Route::middleware([CheckLoginStatus::class])->group(function () {
         Route::prefix('/foto')->group(function () {
             Route::get('/add', [FotoController::class, 'showAddFoto']);
             Route::post('/add', [FotoController::class, 'addFoto'])->name('addFoto');
-            Route::get('/{id}', [FotoController::class, 'showDetailFoto']);
+            Route::get('/{id}', [FotoController::class, 'showDetailFoto'])->name('detailFoto');
             Route::post('/{id}/like', [FotoController::class, 'toggleLike'])->name('toggleLike');
             Route::post('/{id}/comment', [FotoController::class, 'addComment'])->name('addComment');
             Route::delete('/{id}/delete', [FotoController::class, 'deleteFoto'])->name('deleteFoto');
@@ -52,4 +53,4 @@ Route::middleware([CheckLoginStatus::class])->group(function () {
 });
 
 
-Route::get('test', [DashboardController::class, 'getNotifications']);
+// Route::get('test', [DashboardController::class, 'getNotifications']);

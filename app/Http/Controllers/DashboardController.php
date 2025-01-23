@@ -90,14 +90,13 @@ class DashboardController extends Controller
         return redirect()->route('profile');
     }
 
-    public function getNotifications()
+    public function markAsRead()
     {
         $userId = Session::get('user_id');
+        $user = Users::where('id', $userId)->first();
 
-        // Fetch unread notifications for the user
-        $unreadNotifications = Users::find($userId)->unreadNotifications;
-        dd($unreadNotifications);
+        $user->unreadNotifications->markAsRead();
 
-        return view('your-view', compact('unreadNotifications'));
+        return redirect()->back();
     }
 }

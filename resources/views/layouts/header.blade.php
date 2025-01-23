@@ -24,12 +24,14 @@
                         class="hidden absolute right-0 mt-2 w-64 bg-white rounded-md shadow-lg py-1">
                         @if ($unreadNotifications->count() > 0)
                             @foreach ($unreadNotifications as $notification)
-                                <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
-                                    {{ $notification->data['message'] }}
+                                <a href="{{ route('detailFoto', $notification->data['id_foto']) }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+                                    <span>{{ $notification->data['message'] }}</span><br>
+                                    <span class="italic text-[11px] font-light">{{ $notification->created_at }}</span>
                                 </a>
                             @endforeach
+                            <button class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 text-center w-full" onclick="window.location.href='{{ route('markAsRead') }}'">Mark all as read</button>
                         @else
-                            <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">No new
+                            <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 text-center">No new
                                 notifications</a>
                         @endif
                     </div>
