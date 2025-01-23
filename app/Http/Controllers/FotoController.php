@@ -17,7 +17,7 @@ class FotoController extends Controller
 {
     public function showDetailFoto($id)
     {
-        $foto = Foto::where('id', $id)->with('user')->withCount('like')->with('like')->withCount('komen')->with('komen')->first();
+        $foto = Foto::where('id', $id)->with('user')->withCount('like')->withCount('komen')->with('komen')->first();
         // dd($foto);
         $foto->is_liked = $foto->like->contains('id_user', Session::get('user_id')) ? true : false;
 
@@ -67,10 +67,12 @@ class FotoController extends Controller
         $userId = Session::get('user_id');
         $user = Users::where('id', $userId)->first();
 
-        $existingLike = Like::where('id_foto', $id)->where('id_user', $userId)->first();
+        $existingLike = Like::where('id_foto', $id)->where('id_user', $userId)->get();
 
-        if ($existingLike) {
-            $existingLike->delete();
+        if ($existingLike->count() > 0) {
+            foreach ($existingLike as $like) {
+                $like->delete();
+            }
             DB::table('notifications')
                 ->where('data->id_user', $userId)
                 ->where('data->id_foto', $id)
