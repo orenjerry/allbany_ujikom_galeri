@@ -20,6 +20,9 @@
     @yield('content')
 
     @stack('scripts')
+    @if (Session::has('user_id'))
+        @include('layouts.footer')
+    @endif
 </body>
 
 </html>
