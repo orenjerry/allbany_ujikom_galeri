@@ -12,7 +12,11 @@ class AuthController extends Controller
 {
     public function showLoginForm()
     {
-        return view('auth.login');
+        if (!Session::has('user_id')) {
+            return view('auth.login');
+        } else {
+            return redirect('dashboard');
+        }
     }
 
     public function login(Request $request)
@@ -25,6 +29,15 @@ class AuthController extends Controller
         $user = Users::where('username', $request->username)->first();
 
         if ($user && Hash::check($request->password, $user->password)) {
+            if ($user->accepted == 0) {
+                return back()
+                    ->withErrors(['username' => 'Akun-mu belum diterima. Harap tunggu admin untuk menyetujui akun-mu.'])
+                    ->withInput($request->only('username'));
+            } elseif ($user->accepted == 'rejected') {
+                return back()
+                    ->withErrors(['username' => 'Akun-mu ditolak. Harap membuat akun kembali.'])
+                    ->withInput($request->only('username'));
+            }
             Session::put('user_id', $user->id);
             Session::put('username', $user->username);
             Session::put('email', $user->email);
@@ -64,11 +77,18 @@ class AuthController extends Controller
             ]);
 
             return redirect('/auth/login')
-                ->with('success', 'Registration successful! Please login now.');
+                ->with('success', 'Registrasi sukses, harap tunggu admin untuk menyetujui akun anda.');
         } catch (\Exception $e) {
             return back()
                 ->withInput()
-                ->withErrors(['error' => 'Registration failed. Please try again.']);
+                ->withErrors(['error' => 'Registrasi gagal! Harap coba lagi.']);
         }
+    }
+
+    public function doLogout()
+    {
+        Session::flush();
+        Session::save();
+        return redirect('/auth/login');
     }
 }

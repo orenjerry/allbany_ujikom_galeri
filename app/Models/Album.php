@@ -9,7 +9,7 @@ class Album extends Model
 {
     public $timestamps = true;
     protected $table = 'allbany_album';
-    protected $fillable = ['id_user', 'nama_album'];
+    protected $fillable = ['id_user', 'nama_album', 'deskripsi'];
 
     public function user()
     {

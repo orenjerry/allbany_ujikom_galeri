@@ -26,6 +26,7 @@ return new class extends Migration
             $table->string('password');
             $table->string('nama_lengkap');
             $table->string('alamat');
+            $table->enum('accepted', ['1', '0', 'rejected'])->default('0');
             $table->timestamps();
         });
         Schema::create('allbany_album', function (Blueprint $table) {
@@ -34,6 +35,7 @@ return new class extends Migration
             $table->foreign('id_user')->references('id')->on('allbany_user')->onDelete('cascade');
             $table->string('nama_album');
             $table->text('deskripsi')->nullable();
+            $table->timestamps();
         });
         Schema::create('allbany_foto', function (Blueprint $table) {
             $table->bigIncrements('id');
