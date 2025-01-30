@@ -13,11 +13,14 @@
     </style> --}}
 </head>
 
-<body class="bg-gray-100 font-sans leading-normal tracking-normal">
+<body class="bg-gray-100 font-sans leading-normal tracking-normal flex flex-col min-h-screen">
     @if (Session::has('user_id'))
         @include('layouts.header')
     @endif
-    @yield('content')
+
+    <main class="flex-grow">
+        @yield('content')
+    </main>
 
     @stack('scripts')
     @if (Session::has('user_id'))

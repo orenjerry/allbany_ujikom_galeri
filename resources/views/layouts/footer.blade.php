@@ -1,4 +1,3 @@
-<!-- Foooter -->
 <footer class="bg-white">
     <div class="max-w-screen px-4 py-4 mx-auto space-y-8 overflow-hidden sm:px-6 lg:px-8">
         <div class="flex justify-between items-center">
