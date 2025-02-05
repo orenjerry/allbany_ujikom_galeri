@@ -6,8 +6,9 @@ use App\Models\Album;
 use App\Models\Foto;
 use App\Models\Komen;
 use App\Models\Like;
+use App\Models\User;
 use App\Models\Users;
-use App\Notifications\LikeComment;
+use App\Notifications\Notif;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Notification;
@@ -18,6 +19,9 @@ class FotoController extends Controller
     public function showDetailFoto($id)
     {
         $foto = Foto::where('id', $id)->with('user')->withCount('like')->withCount('komen')->with('komen')->first();
+        if (!$foto) {
+            return redirect()->route('dashboard');
+        }
         // dd($foto);
         $foto->is_liked = $foto->like->contains('id_user', Session::get('user_id')) ? true : false;
 
@@ -82,7 +86,7 @@ class FotoController extends Controller
                 'id_foto' => $id,
                 'id_user' => $userId
             ]);
-            Users::find(Foto::where('id', $id)->first()->id_user)->notify(new LikeComment($user->nama_lengkap . ' menyukai foto anda', $userId, $id));
+            Users::find(Foto::where('id', $id)->first()->id_user)->notify(new Notif('like', $user->nama_lengkap . ' menyukai foto anda', $userId, $id));
         }
 
         return redirect()->back();
@@ -98,7 +102,7 @@ class FotoController extends Controller
             'id_user' => $userId,
             'isi_komentar' => $request->komentar
         ]);
-        Users::find(Foto::where('id', $id)->first()->id_user)->notify(new LikeComment($user->nama_lengkap . ' menkomentari foto anda', $userId, $id));
+        Users::find(Foto::where('id', $id)->first()->id_user)->notify(new Notif('comment', $user->nama_lengkap . ' menkomentari foto anda', $userId, $id));
 
         return redirect()->back();
     }
@@ -126,19 +130,30 @@ class FotoController extends Controller
         return redirect()->back();
     }
 
-    public function deleteFoto($id)
+    public function deleteFoto(Request $request, $id)
     {
-        $foto = Foto::where('id', $id)->first();
-        $komen = Komen::where('id_foto', $id)->get();
-        $like = Like::where('id_foto', $id)->get();
+        if (Session::get('id_role') == 1 || Foto::where('id', $id)->first()->id_user == Session::get('user_id')) {
+            $foto = Foto::where('id', $id)->first();
+            $komen = Komen::where('id_foto', $id)->get();
+            $like = Like::where('id_foto', $id)->get();
 
-        $lokasi_foto = $foto->lokasi_file;
-        unlink(public_path($lokasi_foto));
+            try {
+                if (Session::get('id_role') == 1) {
+                    $user = Users::where('id', $foto->id_user)->first();
+                    $user->notify(new Notif('delete', 'Foto berjudul "'. $foto->judul_foto .'" telah dihapus oleh admin karena ' . $request->reason, $foto->id_user, $id));
+                }
+            } catch (\Exception $e) {
+                return redirect()->back()->withErrors(['error' => 'Gagal menghapus foto']);
+            }
 
-        $komen->each->delete();
-        $like->each->delete();
-        $foto->delete();
+            $lokasi_foto = $foto->lokasi_file;
+            unlink(public_path($lokasi_foto));
 
-        return redirect()->route('dashboard');
+            $komen->each->delete();
+            $like->each->delete();
+            $foto->delete();
+
+            return redirect()->route('dashboard');
+        }
     }
 }
