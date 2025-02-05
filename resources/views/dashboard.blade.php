@@ -3,14 +3,14 @@
 
 @section('content')
     <div class="container-fluid mx-auto px-6 py-8">
-        <div class="grid grid-cols-6 gap-4">
+        <div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-4">
             @foreach ($foto as $f)
                 <div>
                     <button onclick="window.location.href='/foto/{{ $f->id }}'" class="w-full h-auto max-h-[300px] object-cover rounded-lg shadow-md">
                         <img src="{{ $f->lokasi_file }}" alt="Image {{ $f->id }}" class="w-full h-auto max-h-[300px] object-cover rounded-lg shadow-md">
                     </button>
                     <div class="-mt-3 flex justify-between items-center">
-                        <h2 class="text-lg font-semibold mt-4">{{ '@' . $f->user->username }}</h2>
+                        <h2 class="text-sm md:text-lg font-semibold mt-4">{{ '@' . $f->user->username }}</h2>
                         <div class="flex items-center mt-4">
                             <span class="text-gray-600" id="like-{{ $f->id }}">{{ $f->like_count }}</span>
                             <form action="{{ route('toggleLike', $f->id) }}" method="POST">

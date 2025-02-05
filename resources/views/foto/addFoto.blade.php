@@ -3,9 +3,9 @@
 
 @section('content')
     <div class="container mx-auto px-6 py-8 flex justify-center">
-        <div class="flex bg-slate-300 rounded-lg shadow-lg w-1/2">
+        <div class="flex bg-slate-300 rounded-lg shadow-lg w-full md:w-1/2">
             <form action="{{ route('addFoto') }}" method="POST" enctype="multipart/form-data"
-                class="flex flex-col ml-4 mt-5 w-full p-6">
+                class="flex flex-col mx-4 mt-5 w-full p-6">
                 @csrf
                 <div class="mb-4">
                     <label for="file" class="block text-[20px] text-gray-600 mb-2">Pilih gambar:</label>
