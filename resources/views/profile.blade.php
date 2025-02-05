@@ -7,7 +7,7 @@
             @csrf
             @method('put')
             <div class="flex justify-center">
-                <div class="w-1/2">
+                <div class="w-full md:w-1/2">
                     <div class="bg-slate-300 rounded-lg shadow-lg p-6">
                         <h1 class="text-[32px] font-semibold text-left">Informasi Pengguna</h1>
                         <div class="mt-4">

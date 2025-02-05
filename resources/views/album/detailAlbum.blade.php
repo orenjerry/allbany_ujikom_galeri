@@ -28,7 +28,7 @@
                 <div class="flex justify-center">
                     {{-- <h1 class="pt-5 pb-2 text-[32px] text-center font-semibold">{{ $album->nama_album }}</h1> --}}
                     <input type="text" name="nama_album" id="nama_album" value="{{ $album->nama_album }}"
-                        class="mt-3 mb-3 text-[32px] text-center font-semibold">
+                        class="mt-3 mb-3 text-[32px] text-center font-semibold lg:w-full w-1/2">
                     <button class="pl-1" type="submit">
                         <svg xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" width="15" height="15"
                             viewBox="0 0 30 30">
@@ -38,7 +38,7 @@
                         </svg>
                     </button>
                 </div>
-                <hr class="border-2 border-gray-300 w-1/2 mx-auto mb-3">
+                <hr class="border-2 border-gray-300 w-3/4 lg:w-1/2 mx-auto mb-3">
                 <div class="flex justify-center pb-5">
                     <textarea name="deskripsi" id="deskripsi" rows="4" class="w-1/2 border border-gray-300 rounded-lg">{{ $album->deskripsi ?? '' }}</textarea>
                 </div>
@@ -46,7 +46,7 @@
             </form>
         </div>
 
-        <div class="grid grid-cols-6 gap-4">
+        <div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-4">
             @if ($album->foto->isEmpty())
                 <div class="col-span-6 text-center">
                     <p class="text-lg">Album ini belum memiliki foto</p>

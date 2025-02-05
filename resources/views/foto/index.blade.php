@@ -2,11 +2,13 @@
 @section('title', 'Detail Foto')
 
 @section('content')
-    <div class="container mx-auto px-6 py-8 flex justify-center">
-        <div class="flex bg-slate-300 rounded-lg shadow-lg">
-            <img src="../{{ $foto->lokasi_file }}" alt="Image {{ $foto->id }}"
-                class="w-auto max-w-[900px] h-auto max-h-[700px] object-cover rounded-lg shadow-md">
-            <div class="flex flex-col ml-4 mt-5">
+    <div class="container-fluid mx-auto px-6 py-8 flex justify-center">
+        <div class="flex flex-col lg:flex-row bg-slate-300 rounded-lg shadow-lg">
+            <div>
+                <img src="../{{ $foto->lokasi_file }}" alt="Image {{ $foto->id }}"
+                    class="w-full h-full lg:max-w-[900px] lg:max-h-[700px] object-cover rounded-lg shadow-md">
+            </div>
+            <div class="flex flex-col p-4 lg:ml-4 lg:mt-5">
                 <div class="flex items-center">
                     <span class="text-[20px] text-gray-600" id="like-{{ $foto->id }}">{{ $foto->like_count }}</span>
                     <form action="{{ route('toggleLike', $foto->id) }}" method="POST">
@@ -94,7 +96,7 @@
                         @endpush
                     @endif
                 </div>
-                <div class="w-[300px] pr-5" id="content">
+                <div class="w-full lg:w-[300px] pr-5" id="content">
                     <div class="h-[400px] w-full overflow-y-auto">
                         <div class="mt-3 font-semibold text-[30px]">
                             <h1>{{ $foto->judul_foto }}</h1>
@@ -110,7 +112,7 @@
                         </div>
                         <div class="mt-10 font-medium">
                             <h1>{{ $foto->komen_count }} Komentar</h1>
-                            <hr class="border-1 border-black mt-3">
+                            <hr class="border-1 border-black mt-3 w-full">
                             <div>
                                 <ul class="list-disc pl-5">
                                     @foreach ($foto->komen as $k)
@@ -134,7 +136,7 @@
                     </div>
                 </div>
                 @if ($foto->id_user === session('user_id'))
-                    <div class="w-[300px] hidden pr-5" id="edit-content">
+                    <div class="w-full lg:w-[300px] hidden pr-5" id="edit-content">
                         <form action="{{ route('editFoto', $foto->id) }}" method="POST" enctype="multipart/form-data">
                             @csrf
                             @method('put')

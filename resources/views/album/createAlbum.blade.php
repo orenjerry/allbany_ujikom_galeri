@@ -3,8 +3,8 @@
 
 @section('content')
     <div class="container mx-auto px-6 py-8 flex justify-center">
-        <div class="flex bg-slate-300 rounded-lg shadow-lg w-1/2">
-            <form action="{{ route('createAlbum') }}" method="POST" class="flex flex-col ml-4 mt-5 w-full p-6">
+        <div class="flex bg-slate-300 rounded-lg shadow-lg w-full md:w-1/2">
+            <form action="{{ route('createAlbum') }}" method="POST" class="flex flex-col mx-4 mt-5 w-full p-6">
                 @csrf
                 <div class="mb-4">
                     <label for="nama_album" class="block text-[20px] text-gray-600 mb-2">Nama Album:</label>
