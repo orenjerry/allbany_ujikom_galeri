@@ -7,16 +7,17 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
 
-class LikeComment extends Notification
+class Notif extends Notification
 {
     use Queueable;
 
     /**
      * Create a new notification instance.
      */
-    protected $isi, $id_user, $id_foto;
-    public function __construct($isi, $id_user, $id_foto)
+    protected $aksi, $isi, $id_user, $id_foto;
+    public function __construct($aksi, $isi, $id_user, $id_foto)
     {
+        $this->aksi = $aksi;
         $this->isi = $isi;
         $this->id_user = $id_user;
         $this->id_foto = $id_foto;
@@ -51,6 +52,7 @@ class LikeComment extends Notification
     public function toArray(object $notifiable): array
     {
         return [
+            'aksi' => $this->aksi,
             'message' => $this->isi,
             'id_user' => $this->id_user,
             'id_foto' => $this->id_foto

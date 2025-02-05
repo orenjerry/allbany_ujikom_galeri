@@ -28,7 +28,7 @@
                             @endif
                         </button>
                     </form>
-                    @if ($foto->id_user === session('user_id'))
+                    @if ($foto->id_user === session('user_id') || session('id_role') == 1)
                         <button id="dropdownButton-{{ $foto->id }}" class="ml-3">
                             <svg class="w-5 h-5" role="img" viewBox="0 0 24 24">
                                 <path
@@ -36,19 +36,49 @@
                                 </path>
                             </svg>
                         </button>
-                        <div class="relative pt-5">
-                            <div id="dropdownMenu-{{ $foto->id }}"
-                                class="hidden absolute right-0 mt-2 w-32 bg-white rounded-lg shadow-lg z-50">
-                                <button id="btn-edit"
-                                    class="block px-4 py-2 text-gray-700 hover:bg-gray-100 w-full text-left rounded-lg">Edit</button>
-                                <form action="{{ route('deleteFoto', $foto->id) }}" method="POST">
-                                    @csrf
-                                    @method('DELETE')
-                                    <button type="submit"
-                                        class="w-full text-left px-4 py-2 text-red-600 hover:bg-gray-100 rounded-lg">Delete</button>
-                                </form>
+                        @if (session('id_role') == 1)
+                            <div class="relative pt-5">
+                                <div id="dropdownMenu-{{ $foto->id }}"
+                                    class="hidden absolute right-0 mt-2 w-32 bg-white rounded-lg shadow-lg z-50">
+                                    <form action="{{ route('deleteFoto', $foto->id) }}" method="POST"
+                                        onsubmit="event.preventDefault(); askReason(this);">
+                                        @csrf
+                                        @method('DELETE')
+                                        <input type="hidden" name="reason" id="delete_reason">
+                                        <button type="submit"
+                                            class="w-full text-left px-4 py-2 text-red-600 hover:bg-gray-100 rounded-lg">Delete</button>
+                                    </form>
+                                </div>
                             </div>
-                        </div>
+                            @push('scripts')
+                                <script>
+                                    function askReason(form) {
+                                        const reason = prompt('Alasan menghapus foto:');
+                                        if (reason) {
+                                            if (confirm('Apakah kamu yakin akan menghapus foto ini?')) {
+                                                document.getElementById('delete_reason').value = reason;
+                                                form.submit();
+                                            }
+                                        }
+                                    }
+                                </script>
+                            @endpush
+                        @else
+                            <div class="relative pt-5">
+                                <div id="dropdownMenu-{{ $foto->id }}"
+                                    class="hidden absolute right-0 mt-2 w-32 bg-white rounded-lg shadow-lg z-50">
+                                    <button id="btn-edit"
+                                        class="block px-4 py-2 text-gray-700 hover:bg-gray-100 w-full text-left rounded-lg">Edit</button>
+                                    <form action="{{ route('deleteFoto', $foto->id) }}" method="POST"
+                                        onsubmit="return confirm('Apakah kamu yakin akan menghapus foto ini?');">
+                                        @csrf
+                                        @method('DELETE')
+                                        <button type="submit"
+                                            class="w-full text-left px-4 py-2 text-red-600 hover:bg-gray-100 rounded-lg">Delete</button>
+                                    </form>
+                                </div>
+                            </div>
+                        @endif
                         @push('scripts')
                             <script>
                                 document.getElementById('dropdownButton-{{ $foto->id }}').addEventListener('click', function() {
@@ -117,7 +147,8 @@
                                 <label for="deskripsi_foto" class="block text-sm font-medium text-gray-700">Deskripsi
                                     Foto</label>
                                 <input type="text" name="deskripsi_foto" id="deskripsi_foto"
-                                    value="{{ $foto->deskripsi_foto }}" class="w-full block text-gray-700 text-sm font-bold mb-2">
+                                    value="{{ $foto->deskripsi_foto }}"
+                                    class="w-full block text-gray-700 text-sm font-bold mb-2">
                             </div>
                             <div class="mt-3">
                                 <label for="album" class="block text-sm font-medium text-gray-700">Album:</label>
