@@ -3,7 +3,7 @@
 
 @section('content')
     <div class="container mx-auto px-6 py-8 flex justify-center">
-        <div class="flex bg-slate-300 rounded-lg shadow-lg w-full md:w-1/2">
+        <div class="flex bg-slate-300 rounded-lg shadow-lg w-full md:w-3/4 lg:w-4/6">
             <form action="{{ route('addFoto') }}" method="POST" enctype="multipart/form-data"
                 class="flex flex-col mx-4 mt-5 w-full p-6">
                 @csrf

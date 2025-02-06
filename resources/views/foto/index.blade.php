@@ -4,9 +4,9 @@
 @section('content')
     <div class="container-fluid mx-auto px-6 py-8 flex justify-center">
         <div class="flex flex-col lg:flex-row bg-slate-300 rounded-lg shadow-lg">
-            <div>
+            <div class="w-auto h-auto lg:min-w-[300px] lg:min-h-[200px] lg:max-w-[1000px] lg:max-h-[600px]">
                 <img src="../{{ $foto->lokasi_file }}" alt="Image {{ $foto->id }}"
-                    class="w-full h-full lg:max-w-[900px] lg:max-h-[700px] object-cover rounded-lg shadow-md">
+                    class="w-full h-full lg:max-w-[900px] object-cover rounded-lg shadow-md">
             </div>
             <div class="flex flex-col p-4 lg:ml-4 lg:mt-5">
                 <div class="flex items-center">
