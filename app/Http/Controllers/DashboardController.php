@@ -18,8 +18,12 @@ class DashboardController extends Controller
             $foto->is_liked = $foto->like->contains('id_user', Session::get('user_id')) ? true : false;
             return $foto;
         });
-        // dd(Session::get('user_id'));
-        return view('dashboard', compact('foto'));
+        $foto_most_liked = Foto::with('user')->withCount('like')->with('like')->orderBy('like_count', 'desc')->take(6)->get()->map(function ($foto) {
+            $foto->is_liked = $foto->like->contains('id_user', Session::get('user_id')) ? true : false;
+            return $foto;
+        });
+        // dd($foto_most_liked);
+        return view('dashboard', compact('foto', 'foto_most_liked'));
     }
 
     public function showAdminDashboard()

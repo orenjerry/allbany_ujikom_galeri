@@ -86,7 +86,10 @@ class FotoController extends Controller
                 'id_foto' => $id,
                 'id_user' => $userId
             ]);
-            Users::find(Foto::where('id', $id)->first()->id_user)->notify(new Notif('like', $user->nama_lengkap . ' menyukai foto anda', $userId, $id));
+            $foto_owner_id = Foto::where('id', $id)->first()->id_user;
+            if (Session::get('user_id') != $foto_owner_id) {
+                Users::find($foto_owner_id)->notify(new Notif('like', $user->nama_lengkap . ' menyukai foto anda', $userId, $id));
+            }
         }
 
         return redirect()->back();
@@ -102,7 +105,10 @@ class FotoController extends Controller
             'id_user' => $userId,
             'isi_komentar' => $request->komentar
         ]);
-        Users::find(Foto::where('id', $id)->first()->id_user)->notify(new Notif('comment', $user->nama_lengkap . ' menkomentari foto anda', $userId, $id));
+        $foto_owner_id = Foto::where('id', $id)->first()->id_user;
+        if (Session::get('user_id') != $foto_owner_id) {
+            Users::find(Foto::where('id', $id)->first()->id_user)->notify(new Notif(aksi: 'comment', isi: $user->nama_lengkap . ' menkomentari foto anda', id_user: $userId, id_foto: $id));
+        }
 
         return redirect()->back();
     }
@@ -140,7 +146,7 @@ class FotoController extends Controller
             try {
                 if (Session::get('id_role') == 1) {
                     $user = Users::where('id', $foto->id_user)->first();
-                    $user->notify(new Notif('delete', 'Foto berjudul "'. $foto->judul_foto .'" telah dihapus oleh admin karena ' . $request->reason, $foto->id_user, $id));
+                    $user->notify(new Notif('delete', 'Foto berjudul "' . $foto->judul_foto . '" telah dihapus oleh admin karena ' . $request->reason, $foto->id_user, $id));
                 }
             } catch (\Exception $e) {
                 return redirect()->back()->withErrors(['error' => 'Gagal menghapus foto']);

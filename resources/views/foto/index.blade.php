@@ -55,13 +55,37 @@
                             @push('scripts')
                                 <script>
                                     function askReason(form) {
-                                        const reason = prompt('Alasan menghapus foto:');
-                                        if (reason) {
-                                            if (confirm('Apakah kamu yakin akan menghapus foto ini?')) {
-                                                document.getElementById('delete_reason').value = reason;
-                                                form.submit();
+                                        Swal.fire({
+                                            title: 'Alasan menghapus foto',
+                                            input: 'text',
+                                            inputPlaceholder: 'Masukkan alasan...',
+                                            showCancelButton: true,
+                                            confirmButtonText: 'Lanjutkan',
+                                            cancelButtonText: 'Batal',
+                                            showLoaderOnConfirm: true,
+                                            preConfirm: (reason) => {
+                                                if (!reason) {
+                                                    Swal.showValidationMessage('Alasan harus diisi')
+                                                }
+                                                return reason;
                                             }
-                                        }
+                                        }).then((result) => {
+                                            if (result.isConfirmed) {
+                                                Swal.fire({
+                                                    title: 'Apakah kamu yakin?',
+                                                    text: "Foto ini akan dihapus secara permanen",
+                                                    icon: 'warning',
+                                                    showCancelButton: true,
+                                                    confirmButtonText: 'Ya, hapus!',
+                                                    cancelButtonText: 'Batal'
+                                                }).then((result) => {
+                                                    if (result.isConfirmed) {
+                                                        document.getElementById('delete_reason').value = result.value;
+                                                        form.submit();
+                                                    }
+                                                });
+                                            }
+                                        });
                                     }
                                 </script>
                             @endpush
