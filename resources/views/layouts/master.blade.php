@@ -7,11 +7,11 @@
     <title>@yield('title') | Gallery</title>
     <link rel="shortcut icon" href="{{ asset('images/icon/logo.png') }}" />
     @vite(['resources/css/app.css', 'resources/js/app.js'])
-    {{-- <style>
-        * {
+    <style>
+        /* * {
             border: 1px solid red;
-        }
-    </style> --}}
+        } */
+    </style>
 </head>
 
 <body class="bg-gray-100 font-sans leading-normal tracking-normal flex flex-col min-h-screen">

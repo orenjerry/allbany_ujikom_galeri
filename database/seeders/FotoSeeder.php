@@ -24,9 +24,9 @@ class FotoSeeder extends Seeder
             Album::create($alb, ['timestamps' => true]);
         }
 
-        $images = glob(public_path('dummy_images/*.*'));
+        $images = glob(public_path('dummy_images/posts/*.*'));
 
-        $destinationPath = public_path('images');
+        $destinationPath = public_path('images/post');
         if (!file_exists($destinationPath)) {
             mkdir($destinationPath, 0777, true);
         }
@@ -41,7 +41,7 @@ class FotoSeeder extends Seeder
             Foto::create([
                 'id_user' => 2,
                 'id_album' => $album->id,
-                'lokasi_file' => 'images/' . $imageName,
+                'lokasi_file' => 'images/post/' . $imageName,
                 'judul_foto' => pathinfo($image, PATHINFO_FILENAME),
                 'deskripsi_foto' => 'Ini adalah foto ' . pathinfo($image, PATHINFO_FILENAME),
             ]);
