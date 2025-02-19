@@ -157,13 +157,15 @@
                                                     {{ strtoupper(substr($k->user->username, 0, 1)) }}
                                                 </div>
                                             @endif
-                                            <div>
+                                            <div class="space-y-0">
                                                 <h1 class="font-semibold">{{ $k->user->username }}</h1>
+                                                <span class="italic text-[11px] font-light block">
+                                                    {{ \Carbon\Carbon::parse($k->created_at)->diffForHumans() }}
+                                                </span>
                                                 <p class="font-normal text-[12px]">{{ $k->isi_komentar }}</p>
                                             </div>
                                         </li>
                                     @endforeach
-
                                 </ul>
                             </div>
                         </div>

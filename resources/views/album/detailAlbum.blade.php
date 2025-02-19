@@ -26,7 +26,6 @@
                 @csrf
                 @method('put')
                 <div class="flex justify-center">
-                    {{-- <h1 class="pt-5 pb-2 text-[32px] text-center font-semibold">{{ $album->nama_album }}</h1> --}}
                     <input type="text" name="nama_album" id="nama_album" value="{{ $album->nama_album }}"
                         class="mt-3 mb-3 text-[32px] text-center font-semibold lg:w-full w-1/2">
                     <button class="pl-1" type="submit">

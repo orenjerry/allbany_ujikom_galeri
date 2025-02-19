@@ -10,13 +10,19 @@ class AlbumController extends Controller
 {
     public function showAlbum()
     {
-        $album = Album::where('id_user', Session::get('user_id'))->with('foto')->get()->map(function ($album) {
+        $album = Album::where('id_user', Session::get('user_id'))
+            ->with('foto')
+            ->paginate(6);
+
+        $album->getCollection()->transform(function ($album) {
             $firstFoto = $album->foto()->inRandomOrder()->first();
             $album->cover_image = $firstFoto ? $firstFoto->lokasi_file : 'assets/images/default_images/default_album.png';
             return $album;
         });
+
         return view('album.index', compact('album'));
     }
+
 
     public function showDetailAlbum($id)
     {

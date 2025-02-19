@@ -56,4 +56,4 @@ Route::middleware([CheckLoginStatus::class])->group(function () {
 });
 
 
-// Route::get('test', [DashboardController::class, 'getNotifications']);
+// Route::get('test', [FotoController::class, 'downloader']);

@@ -39,7 +39,7 @@ class FotoController extends Controller
     public function addFoto(Request $request)
     {
         $validate = $request->validate([
-            'file' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:5120',
+            'file' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:10240',
             'judul' => 'required',
             'deskripsi' => 'required',
             'album' => 'required'
@@ -53,12 +53,12 @@ class FotoController extends Controller
 
         $file = $request->file('file');
         $fileName = str()->random(19) . '.' . $file->getClientOriginalExtension();
-        $file->move('images', $fileName);
+        $file->move('images/post', $fileName);
 
         Foto::create([
             'id_user' => $userId,
             'id_album' => $request->album,
-            'lokasi_file' => 'images/' . $fileName,
+            'lokasi_file' => 'images/post/' . $fileName,
             'judul_foto' => $request->judul,
             'deskripsi_foto' => $request->deskripsi
         ]);
@@ -162,4 +162,15 @@ class FotoController extends Controller
             return redirect()->route('dashboard');
         }
     }
+
+    // public function downloader()
+    // {
+    //     $url = 'https://picsum.photos';
+    //     for ($i=0; $i < 50; $i++) {
+    //         $urls = $url . '/' . rand(200, 1000) . '/' . rand(200, 1000);
+    //         $file = file_get_contents($urls);
+    //         $fileName = str()->random(19) . '.jpg';
+    //         file_put_contents('dummy_images/posts/' . $fileName, $file);
+    //     }
+    // }
 }

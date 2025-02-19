@@ -40,10 +40,10 @@
                     class="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600 transition duration-200 mt-5">
                     Upload Foto
                 </button>
+                @error('file')
+                    <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
+                @enderror
             </form>
-            @error('file')
-                <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
-            @enderror
         </div>
     </div>
 @stop

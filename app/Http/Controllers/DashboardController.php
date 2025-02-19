@@ -12,19 +12,62 @@ use Illuminate\Support\Facades\Session;
 
 class DashboardController extends Controller
 {
-    public function showDashboard()
+    public function showDashboard(Request $request)
     {
-        $foto = Foto::with('user')->withCount('like')->with('like')->inRandomOrder()->get()->map(function ($foto) {
+        $filter = $request->query('filter');
+
+        $query = Foto::with('user')
+            ->withCount('like', 'komen')
+            ->with('like');
+
+        switch ($filter) {
+            case 'likes_desc':
+                $query->orderBy('like_count', 'desc');
+                break;
+            case 'likes_asc':
+                $query->orderBy('like_count', 'asc');
+                break;
+            case 'komen_desc':
+                $query->orderBy('komen_count', 'desc');
+                break;
+            case 'komen_asc':
+                $query->orderBy('komen_count', 'asc');
+                break;
+            case 'date_desc':
+                $query->orderBy('created_at', 'desc');
+                break;
+            case 'date_asc':
+                $query->orderBy('created_at', 'asc');
+                break;
+            case 'only_liked':
+                $query->whereHas('like', function ($q) {
+                    $q->where('id_user', Session::get('user_id'));
+                });
+                break;
+            default:
+                $query->inRandomOrder();
+                break;
+        }
+
+        $foto = $query->get()->map(function ($foto) {
             $foto->is_liked = $foto->like->contains('id_user', Session::get('user_id')) ? true : false;
             return $foto;
         });
-        $foto_most_liked = Foto::with('user')->withCount('like')->with('like')->orderBy('like_count', 'desc')->take(6)->get()->map(function ($foto) {
-            $foto->is_liked = $foto->like->contains('id_user', Session::get('user_id')) ? true : false;
-            return $foto;
-        });
-        // dd($foto_most_liked);
+
+        $foto_most_liked = Foto::with('user')
+            ->withCount('like')
+            ->with('like')
+            ->orderBy('like_count', 'desc')
+            ->take(6)
+            ->get()
+            ->map(function ($foto) {
+                $foto->is_liked = $foto->like->contains('id_user', Session::get('user_id')) ? true : false;
+                return $foto;
+            });
+
         return view('dashboard', compact('foto', 'foto_most_liked'));
     }
+
 
     public function showAdminDashboard()
     {
@@ -95,7 +138,7 @@ class DashboardController extends Controller
             }
 
             $profilePicture = $request->file('profile_picture');
-            $profilePictureName = time() . '.' . $profilePicture->getClientOriginalExtension();
+            $profilePictureName = time() . '-' . rand(100, 999) . '.' . $profilePicture->getClientOriginalExtension();
 
             $profilePicture->move($destinationPath, $profilePictureName);
 

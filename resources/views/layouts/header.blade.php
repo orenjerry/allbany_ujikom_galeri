@@ -27,7 +27,9 @@
                                 <a href="@if ($notification->data['aksi'] != 'delete') {{ route('detailFoto', $notification->data['id_foto']) }}@else# @endif"
                                     class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
                                     <span>{{ $notification->data['message'] }}</span><br>
-                                    <span class="italic text-[11px] font-light">{{ $notification->created_at }}</span>
+                                    <span class="italic text-[11px] font-light">
+                                        {{ \Carbon\Carbon::parse($notification->created_at)->diffForHumans() }}
+                                    </span>
                                 </a>
                             @endforeach
                             <button class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 text-center w-full"
