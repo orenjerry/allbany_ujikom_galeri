@@ -21,6 +21,7 @@ return new class extends Migration
             $table->bigIncrements('id');
             $table->bigInteger('id_role')->unsigned();
             $table->foreign('id_role')->references('id')->on('allbany_role')->onDelete('cascade');
+            $table->string('foto_profil')->nullable();
             $table->string('username');
             $table->string('email')->unique();
             $table->string('password');

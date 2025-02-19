@@ -61,11 +61,15 @@ class DashboardController extends Controller
 
     public function editProfile(Request $request)
     {
+        // dd($request->all());
         $validate = $request->validate([
             'nama_lengkap' => 'required',
             'email' => 'required|email',
             'alamat' => 'required',
             'username' => 'required',
+            'current_password' => 'nullable|string',
+            'new_password' => 'nullable|string|min:8|confirmed',
+            'profile_picture' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:5142',
         ]);
 
         if (!$validate) {
@@ -83,12 +87,28 @@ class DashboardController extends Controller
             }
         }
 
+        if ($request->hasFile('profile_picture')) {
+            $destinationPath = public_path('images/profile/' . $user->id);
+
+            if (!file_exists($destinationPath)) {
+                mkdir($destinationPath, 0777, true);
+            }
+
+            $profilePicture = $request->file('profile_picture');
+            $profilePictureName = time() . '.' . $profilePicture->getClientOriginalExtension();
+
+            $profilePicture->move($destinationPath, $profilePictureName);
+
+            $user->foto_profil = 'images/profile/' . $user->id . '/' . $profilePictureName;
+        }
+
         $user->update([
             'nama_lengkap' => $request->nama_lengkap,
             'email' => $request->email,
             'alamat' => $request->alamat,
             'username' => $request->username,
             'password' => $new_password ?? $user->password,
+            'foto_profil' => $user->foto_profil,
         ]);
 
         return redirect()->route('profile');

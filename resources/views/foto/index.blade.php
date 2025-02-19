@@ -128,25 +128,42 @@
                         <div class="mt-1 text-[13px]">
                             <p>{{ $foto->deskripsi_foto }}</p>
                         </div>
-                        <div class="mt-2 text-[15px]">
-                            <h1
-                                class="rounded-md bg-blue-50 px-1 py-1 text-xs ring-1 ring-inset ring-blue-700/10 inline-block">
-                                Diupload oleh <span class="text-blue-700">{{ '@' . $foto->user->username }}</span></h1>
-                            <h1 class="text-xs italic text-slate-500">Last edited : {{ $foto->updated_at }}</h1>
+                        <div class="pt-5 flex items-center gap-2">
+                            @if ($foto->user->foto_profil)
+                                <img src="{{ asset($foto->user->foto_profil) }}" alt="Profile Picture"
+                                    class="w-7 h-7 rounded-full object-cover">
+                            @else
+                                <div
+                                    class="w-7 h-7 rounded-full bg-blue-500 flex items-center justify-center text-white text-sm font-bold">
+                                    {{ strtoupper(substr($foto->user->username, 0, 1)) }}
+                                </div>
+                            @endif
+                            <span class="text-m font-semibold">{{ $foto->user->username }}</span>
                         </div>
+
                         <div class="mt-10 font-medium">
                             <h1>{{ $foto->komen_count }} Komentar</h1>
                             <hr class="border-1 border-black mt-3 w-full">
                             <div>
-                                <ul class="list-disc pl-5">
+                                <ul class="list-disc">
                                     @foreach ($foto->komen as $k)
-                                        <li>
-                                            <div class="mt-3">
-                                                <h1 class="font-semibold">{{ '@' . $k->user->username }}</h1>
+                                        <li class="flex items-start gap-3 mt-3">
+                                            @if ($k->user->foto_profil)
+                                                <img src="{{ asset($k->user->foto_profil) }}" alt="Profile Picture"
+                                                    class="w-8 h-8 rounded-full object-cover">
+                                            @else
+                                                <div
+                                                    class="w-8 h-8 rounded-full bg-blue-500 flex items-center justify-center text-white text-sm font-bold">
+                                                    {{ strtoupper(substr($k->user->username, 0, 1)) }}
+                                                </div>
+                                            @endif
+                                            <div>
+                                                <h1 class="font-semibold">{{ $k->user->username }}</h1>
                                                 <p class="font-normal text-[12px]">{{ $k->isi_komentar }}</p>
                                             </div>
                                         </li>
                                     @endforeach
+
                                 </ul>
                             </div>
                         </div>

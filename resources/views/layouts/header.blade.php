@@ -24,14 +24,17 @@
                         class="hidden absolute right-0 mt-2 w-64 bg-white rounded-md shadow-lg py-1">
                         @if ($unreadNotifications->count() > 0)
                             @foreach ($unreadNotifications as $notification)
-                                <a href="@if($notification->data['aksi'] != 'delete'){{ route('detailFoto', $notification->data['id_foto']) }}@else#@endif" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+                                <a href="@if ($notification->data['aksi'] != 'delete') {{ route('detailFoto', $notification->data['id_foto']) }}@else# @endif"
+                                    class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
                                     <span>{{ $notification->data['message'] }}</span><br>
                                     <span class="italic text-[11px] font-light">{{ $notification->created_at }}</span>
                                 </a>
                             @endforeach
-                            <button class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 text-center w-full" onclick="window.location.href='{{ route('markAsRead') }}'">Mark all as read</button>
+                            <button class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 text-center w-full"
+                                onclick="window.location.href='{{ route('markAsRead') }}'">Mark all as read</button>
                         @else
-                            <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 text-center">No new
+                            <a href="#"
+                                class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 text-center">No new
                                 notifications</a>
                         @endif
                     </div>
@@ -51,12 +54,17 @@
                     </svg>
                 </button>
                 <button id="profileButton" class="pl-4" title="Profile">
-                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
-                        stroke="currentColor" class="w-8 h-8">
-                        <path stroke-linecap="round" stroke-linejoin="round"
-                            d="M17.982 18.725A7.488 7.488 0 0 0 12 15.75a7.488 7.488 0 0 0-5.982 2.975m11.963 0a9 9 0 1 0-11.963 0m11.963 0A8.966 8.966 0 0 1 12 21a8.966 8.966 0 0 1-5.982-2.275M15 9.75a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
-                    </svg>
+                    @if ($userss->foto_profil)
+                        <img src="{{ asset($userss->foto_profil) }}" alt="Profile Picture"
+                            class="w-8 h-8 rounded-full object-cover">
+                    @else
+                        <div
+                            class="w-8 h-8 rounded-full bg-blue-500 flex items-center justify-center text-white text-sm font-bold">
+                            {{ strtoupper(substr($userss->username, 0, 1)) }}
+                        </div>
+                    @endif
                 </button>
+
                 <div class="relative pt-6">
                     <div id="profileModal" class="hidden absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg py-1">
                         <a href="/profile" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Profile</a>
@@ -73,6 +81,7 @@
                         </form>
                     </div>
                 </div>
+
             </div>
         </div>
     </div>
