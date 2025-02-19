@@ -95,7 +95,7 @@ class DashboardController extends Controller
             }
 
             $profilePicture = $request->file('profile_picture');
-            $profilePictureName = time() . '.' . $profilePicture->getClientOriginalExtension();
+            $profilePictureName = time() . '-' . rand(100, 999). '.' . $profilePicture->getClientOriginalExtension();
 
             $profilePicture->move($destinationPath, $profilePictureName);
 

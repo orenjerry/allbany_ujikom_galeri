@@ -13,22 +13,21 @@
                         <div class="mt-4">
                             <div class="flex items-center gap-8">
                                 <div class="flex flex-col items-center">
-                                    <div id="preview-container">
+                                    <label for="profile_picture" class="relative group cursor-pointer">
                                         @if ($user->foto_profil)
-                                            <img src="{{ asset($user->foto_profil) }}"
-                                                alt="Profile Picture" id="preview-image"
-                                                class="w-32 h-32 rounded-full object-cover mb-2">
+                                            <img src="{{ asset($user->foto_profil) }}" alt="Profile Picture"
+                                                id="preview-image"
+                                                class="w-32 h-32 rounded-full object-cover transition duration-200">
                                         @else
                                             <div id="default-preview"
-                                                class="w-32 h-32 rounded-full bg-blue-500 flex items-center justify-center text-white text-4xl font-bold mb-2">
+                                                class="w-32 h-32 rounded-full bg-blue-500 flex items-center justify-center text-white text-4xl font-bold">
                                                 {{ strtoupper(substr($user->username, 0, 1)) }}
                                             </div>
-                                            <img id="preview-image" class="w-32 h-32 rounded-full object-cover mb-2 hidden">
                                         @endif
-                                    </div>
-                                    <label for="profile_picture"
-                                        class="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600 transition duration-200 cursor-pointer">
-                                        Ganti Foto
+                                        <div
+                                            class="absolute inset-0 bg-black bg-opacity-50 flex items-center justify-center text-white text-sm font-semibold rounded-full opacity-0 group-hover:opacity-100 transition duration-200">
+                                            Ganti Foto
+                                        </div>
                                     </label>
                                     <input type="file" id="profile_picture" name="profile_picture" class="hidden"
                                         accept="image/*">
