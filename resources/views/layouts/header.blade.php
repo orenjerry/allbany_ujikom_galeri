@@ -77,6 +77,7 @@
                 <div class="relative pt-6">
                     <div id="profileModal" class="hidden absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg py-1">
                         <a href="/profile" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Profile</a>
+                        <a href="/profile/insight" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Insight</a>
                         @if (session('id_role') == 1)
                             <a href="{{ route('admin.dashboard') }}"
                                 class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Admin Dashboard</a>

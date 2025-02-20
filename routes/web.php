@@ -4,6 +4,7 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\AlbumController;
 use App\Http\Controllers\FotoController;
+use App\Http\Controllers\ProfileController;
 use App\Http\Middleware\CheckLoginStatus;
 use App\Http\Middleware\LoadNotifications;
 use App\Http\Middleware\LoadUsers;
@@ -46,8 +47,9 @@ Route::middleware([CheckLoginStatus::class])->group(function () {
                 Route::put('/{id}/edit', [FotoController::class, 'editFoto'])->name('editFoto');
             });
 
-            Route::get('/profile', [DashboardController::class, 'showProfile'])->name('profile');
-            Route::put('/profile', [DashboardController::class, 'editProfile'])->name('editProfile');
+            Route::get('/profile', [ProfileController::class, 'showProfile'])->name('profile');
+            Route::put('/profile', [ProfileController::class, 'editProfile'])->name('editProfile');
+            Route::get('/profile/insight', [ProfileController::class, 'insight'])->name('insight');
 
             Route::get('/admin/dashboard', [DashboardController::class, 'showAdminDashboard'])->name('admin.dashboard');
             Route::put('/admin/approve/{id}', [DashboardController::class, 'approveUser'])->name('admin.approve');
