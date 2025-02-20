@@ -23,6 +23,8 @@
                                                 class="w-32 h-32 rounded-full bg-blue-500 flex items-center justify-center text-white text-4xl font-bold">
                                                 {{ strtoupper(substr($user->username, 0, 1)) }}
                                             </div>
+                                            <img src="" alt="Preview Picture" id="preview-image"
+                                                class="w-32 h-32 rounded-full object-cover transition duration-200 hidden">
                                         @endif
                                         <div
                                             class="absolute inset-0 bg-black bg-opacity-50 flex items-center justify-center text-white text-sm font-semibold rounded-full opacity-0 group-hover:opacity-100 transition duration-200">

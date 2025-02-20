@@ -20,8 +20,8 @@ class UserSeeder extends Seeder
         }
 
         $users = [
-            ['username' => 'Superadmin', 'email' => 'superadmin@gmail.com', 'password' => bcrypt('password'), 'id_role' => 1, 'nama_lengkap' => 'Superadmin', 'alamat' => 'Jl. Superadmin', 'accepted' => true],
-            ['username' => 'User', 'email' => 'user@gmail.com', 'password' => bcrypt('password'), 'id_role' => 2, 'nama_lengkap' => 'User', 'alamat' => 'Jl. User', 'accepted' => true],
+            ['username' => 'Superadmin', 'email' => 'superadmin@gmail.com', 'password' => bcrypt('password'), 'id_role' => 1, 'nama_lengkap' => 'Superadmin', 'alamat' => 'Jl. Superadmin', 'accepted' => 'accepted'],
+            ['username' => 'User', 'email' => 'user@gmail.com', 'password' => bcrypt('password'), 'id_role' => 2, 'nama_lengkap' => 'User', 'alamat' => 'Jl. User', 'accepted' => 'accepted'],
         ];
 
         foreach ($users as $user) {

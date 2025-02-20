@@ -27,7 +27,7 @@ return new class extends Migration
             $table->string('password');
             $table->string('nama_lengkap');
             $table->string('alamat');
-            $table->enum('accepted', ['1', '0', 'rejected'])->default('0');
+            $table->enum('accepted', ['nothing', 'accepted', 'rejected'])->default('nothing');
             $table->timestamps();
         });
         Schema::create('allbany_album', function (Blueprint $table) {

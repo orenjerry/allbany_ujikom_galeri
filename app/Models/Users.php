@@ -18,4 +18,8 @@ class Users extends Model
     {
         return $this->belongsTo(Role::class, 'id_role');
     }
+    public function rejectionReason()
+    {
+        return $this->hasOne(UsersRejectReason::class, 'id_user', 'id');
+    }
 }

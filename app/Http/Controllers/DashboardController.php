@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Foto;
 use App\Models\Like;
 use App\Models\Users;
+use App\Models\UsersRejectReason;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Notification;
@@ -71,20 +72,29 @@ class DashboardController extends Controller
 
     public function showAdminDashboard()
     {
-        $users = Users::where('accepted', '!=', 1)->get();
-        // dd($users);
-        return view('admin.dashboard', compact('users'));
+        $users = Users::where('accepted', 'nothing')->get();
+
+        $rejected = Users::where('accepted', 'rejected')
+            ->with('rejectionReason')
+            ->paginate(5);
+
+        return view('admin.dashboard', compact('users', 'rejected'));
     }
 
     public function approveUser(Request $request, $id)
     {
         $user = Users::findOrFail($id);
-        if ($request->action == 'approve') {
-            $approve = 1;
-        } elseif ($request->action == 'reject') {
-            $approve = 'rejected';
-        }
         try {
+            if ($request->action == 'approve') {
+                $approve = 'accepted';
+            } elseif ($request->action == 'reject') {
+                $approve = 'rejected';
+                $reason = $request->reason;
+                UsersRejectReason::create([
+                    'id_user' => $id,
+                    'reason' => $reason,
+                ]);
+            }
             $user->update([
                 'accepted' => $approve,
             ]);
@@ -93,7 +103,7 @@ class DashboardController extends Controller
             return redirect()->back()->with('error', 'Failed to update user status');
         }
 
-        return redirect()->route('admin.dashboard')->with('success', 'User status updated successfully');
+        return response()->json(['success' => 1, 'message' => 'User status updated'], 200);
     }
 
     public function showProfile()

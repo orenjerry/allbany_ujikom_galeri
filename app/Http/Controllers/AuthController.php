@@ -29,13 +29,14 @@ class AuthController extends Controller
         $user = Users::where('username', $request->username)->first();
 
         if ($user && Hash::check($request->password, $user->password)) {
-            if ($user->accepted == 0) {
+            if ($user->accepted == 'nothing') {
                 return back()
                     ->withErrors(['username' => 'Akun-mu belum diterima. Harap tunggu admin untuk menyetujui akun-mu.'])
                     ->withInput($request->only('username'));
             } elseif ($user->accepted == 'rejected') {
+                $reason = $user->rejectionReason->reason;
                 return back()
-                    ->withErrors(['username' => 'Akun-mu ditolak. Harap membuat akun kembali.'])
+                    ->withErrors(['username' => 'Akun-mu ditolak dengan alasan "' . $reason . '". Harap membuat akun kembali.'])
                     ->withInput($request->only('username'));
             }
             Session::put('user_id', $user->id);
@@ -66,8 +67,15 @@ class AuthController extends Controller
             'password' => 'required|min:6'
         ]);
 
+        // Check if the username has a space and symbols
+        if (preg_match('/\s/', $request->username) || preg_match('/[^A-Za-z0-9]/', $request->username)) {
+            return back()
+                ->withInput()
+                ->withErrors(['username' => "Username can't contain spaces or special characters."]);
+        }
+
         try {
-            $user = Users::create([
+            Users::create([
                 'username' => $request->username,
                 'nama_lengkap' => $request->nama_lengkap,
                 'email' => $request->email,
