@@ -22,7 +22,6 @@ class FotoController extends Controller
         if (!$foto) {
             return redirect()->route('dashboard');
         }
-        // dd($foto);
         $foto->is_liked = $foto->like->contains('id_user', Session::get('user_id')) ? true : false;
 
         $album = Album::where('id_user', Session::get('user_id'))->get();

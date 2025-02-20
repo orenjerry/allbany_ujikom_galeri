@@ -5,41 +5,48 @@
                 <a href="/dashboard" class="text-xl font-bold text-gray-800">Gallery</a>
             </div>
 
+            <div class="flex justify-center items-center w-2/3">
+                <input type="text" id="searchInput" class="border p-2 rounded shadow-lg w-full" placeholder="Search..."
+                    value="{{ request('search') }}" onkeypress="handleSearch(event)" />
+
+            </div>
+
             <div class="flex items-center">
                 <div class="relative mt-2">
-                    <button id="notificationButton" class="relative pl-4" title="Notifications"
-                        onclick="toggleNotifications()">
-                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
-                            stroke="currentColor" class="w-8 h-8">
-                            <path stroke-linecap="round" stroke-linejoin="round"
-                                d="M15 17h5l-1.405-1.405A2.032 2.032 0 0 1 18 14.158V11a6.002 6.002 0 0 0-4-5.659V5a2 2 0 1 0-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 1 1-6 0v-1m6 0H9" />
-                        </svg>
-                        @if ($unreadNotifications->count() > 0)
-                            <span id="unreadBadge"
-                                class="absolute top-0 right-0 inline-block w-3 h-3 bg-red-600 rounded-full"></span>
-                        @endif
-                    </button>
-
-                    <div id="notificationModal"
-                        class="hidden absolute right-0 mt-2 w-64 bg-white rounded-md shadow-lg py-1">
-                        @if ($unreadNotifications->count() > 0)
-                            @foreach ($unreadNotifications as $notification)
-                                <a href="@if ($notification->data['aksi'] != 'delete') {{ route('detailFoto', $notification->data['id_foto']) }}@else# @endif"
-                                    class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
-                                    <span>{{ $notification->data['message'] }}</span><br>
-                                    <span class="italic text-[11px] font-light">
-                                        {{ \Carbon\Carbon::parse($notification->created_at)->diffForHumans() }}
-                                    </span>
-                                </a>
-                            @endforeach
-                            <button class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 text-center w-full"
-                                onclick="window.location.href='{{ route('markAsRead') }}'">Mark all as read</button>
-                        @else
-                            <a href="#"
-                                class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 text-center">No new
-                                notifications</a>
-                        @endif
-                    </div>
+                    @if (session('user_id'))
+                        <button id="notificationButton" class="relative pl-4" title="Notifications"
+                            onclick="toggleNotifications()">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                                stroke-width="1.5" stroke="currentColor" class="w-8 h-8">
+                                <path stroke-linecap="round" stroke-linejoin="round"
+                                    d="M15 17h5l-1.405-1.405A2.032 2.032 0 0 1 18 14.158V11a6.002 6.002 0 0 0-4-5.659V5a2 2 0 1 0-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 1 1-6 0v-1m6 0H9" />
+                            </svg>
+                            @if ($unreadNotifications->count() > 0)
+                                <span id="unreadBadge"
+                                    class="absolute top-0 right-0 inline-block w-3 h-3 bg-red-600 rounded-full"></span>
+                            @endif
+                        </button>
+                        <div id="notificationModal"
+                            class="hidden absolute right-0 mt-2 w-64 bg-white rounded-md shadow-lg py-1">
+                            @if ($unreadNotifications->count() > 0)
+                                @foreach ($unreadNotifications as $notification)
+                                    <a href="@if ($notification->data['aksi'] != 'delete') {{ route('detailFoto', $notification->data['id_foto']) }}@else# @endif"
+                                        class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+                                        <span>{{ $notification->data['message'] }}</span><br>
+                                        <span class="italic text-[11px] font-light">
+                                            {{ \Carbon\Carbon::parse($notification->created_at)->diffForHumans() }}
+                                        </span>
+                                    </a>
+                                @endforeach
+                                <button
+                                    class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 text-center w-full"
+                                    onclick="window.location.href='{{ route('markAsRead') }}'">Mark all as read</button>
+                            @else
+                                <a href="#"
+                                    class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 text-center">No new
+                                    notifications</a>
+                            @endif
+                        </div>
                 </div>
                 <button onclick="window.location.href='/foto/add'" class="pl-4" title="Add Photos">
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
@@ -83,7 +90,15 @@
                         </form>
                     </div>
                 </div>
-
+            @else
+                <button onclick="window.location.href='/auth/login'" class="pl-4" title="Login">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                        stroke="currentColor" class="size-9">
+                        <path stroke-linecap="round" stroke-linejoin="round"
+                            d="M17.982 18.725A7.488 7.488 0 0 0 12 15.75a7.488 7.488 0 0 0-5.982 2.975m11.963 0a9 9 0 1 0-11.963 0m11.963 0A8.966 8.966 0 0 1 12 21a8.966 8.966 0 0 1-5.982-2.275M15 9.75a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
+                    </svg>
+                </button>
+                @endif
             </div>
         </div>
     </div>
@@ -91,6 +106,21 @@
 
 @push('scripts')
     <script>
+        function handleSearch(event) {
+            if (event.key === "Enter") {
+                event.preventDefault();
+                const query = document.getElementById('searchInput').value;
+                const currentFilter = new URLSearchParams(window.location.search).get('filter') || '';
+
+                let url = '/dashboard?search=' + encodeURIComponent(query);
+                if (currentFilter) {
+                    url += '&filter=' + encodeURIComponent(currentFilter);
+                }
+
+                window.location.href = url;
+            }
+        }
+
         const profileButton = document.getElementById('profileButton');
         const profileModal = document.getElementById('profileModal');
 

@@ -15,12 +15,18 @@ class CheckLoginStatus
      */
     public function handle(Request $request, Closure $next): Response
     {
-        if (!session()->has('user_id')) {
-            return redirect('/');
+        if ($request->is('dashboard') || $request->is('foto/*') && $request->isMethod('GET')) {
+            return $next($request);
         }
-        if ((session('id_role') != 1) && $request->is('admin/*')) {
+
+        if (!session()->has('user_id')) {
+            return redirect()->route('auth.login.show')->with(['need_login' => 'You must be logged in to access this page.']);
+        }
+
+        if ($request->is('admin/*')) {
             return redirect('/dashboard');
         }
+
         return $next($request);
     }
 }

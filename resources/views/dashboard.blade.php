@@ -6,17 +6,21 @@
         <div class="mx-14 mb-4 flex justify-between">
             <h1 class="text-2xl font-bold">Photo Gallery</h1>
             <form method="GET" action="{{ route('dashboard') }}">
+                <input type="hidden" name="search" value="{{ request('search') }}">
                 <select name="filter" onchange="this.form.submit()" class="border px-3 py-2 rounded-md">
                     <option value="">-- Filter By --</option>
                     <option value="likes_desc" {{ request('filter') == 'likes_desc' ? 'selected' : '' }}>Most Liked</option>
                     <option value="likes_asc" {{ request('filter') == 'likes_asc' ? 'selected' : '' }}>Least Liked</option>
-                    <option value="komen_desc" {{ request('filter') == 'komen_desc' ? 'selected' : '' }}>Most Commented</option>
-                    <option value="komen_asc" {{ request('filter') == 'komen_asc' ? 'selected' : '' }}>Least Commented</option>
+                    <option value="komen_desc" {{ request('filter') == 'komen_desc' ? 'selected' : '' }}>Most Commented
+                    </option>
+                    <option value="komen_asc" {{ request('filter') == 'komen_asc' ? 'selected' : '' }}>Least Commented
+                    </option>
                     <option value="date_desc" {{ request('filter') == 'date_desc' ? 'selected' : '' }}>Newest</option>
                     <option value="date_asc" {{ request('filter') == 'date_asc' ? 'selected' : '' }}>Oldest</option>
                     <option value="only_liked" {{ request('filter') == 'only_liked' ? 'selected' : '' }}>Only Liked</option>
                 </select>
             </form>
+
         </div>
 
         <div class="card-container">

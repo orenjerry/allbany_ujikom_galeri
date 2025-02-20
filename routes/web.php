@@ -9,7 +9,7 @@ use App\Http\Middleware\LoadNotifications;
 use App\Http\Middleware\LoadUsers;
 use Illuminate\Support\Facades\Route;
 
-Route::redirect('/', '/auth/login');
+Route::redirect('/', '/dashboard');
 
 Route::prefix('/auth')->group(function () {
     Route::get('/login', [AuthController::class, 'showLoginForm'])->name('auth.login.show');
@@ -24,8 +24,9 @@ Route::post('/auth/logout', [AuthController::class, 'doLogout'])->name('auth.log
 Route::middleware([CheckLoginStatus::class])->group(function () {
     Route::middleware([LoadNotifications::class])->group(function () {
         Route::middleware([LoadUsers::class])->group(function () {
-            Route::get('/dashboard', [DashboardController::class, 'showDashboard'])->name('dashboard');
             Route::get('/notifications/mark-as-read', [DashboardController::class, 'markAsRead'])->name('markAsRead');
+
+            Route::get('/dashboard', [DashboardController::class, 'showDashboard'])->name('dashboard');
 
             Route::prefix('/album')->group(function () {
                 Route::get('/', [AlbumController::class, 'showAlbum'])->name('album');
@@ -34,7 +35,6 @@ Route::middleware([CheckLoginStatus::class])->group(function () {
                 Route::get('/{id}', [AlbumController::class, 'showDetailAlbum'])->name('showDetailAlbum');
                 Route::put('/{id}/edit', [AlbumController::class, 'editAlbum'])->name('editAlbum');
             });
-
 
             Route::prefix('/foto')->group(function () {
                 Route::get('/add', [FotoController::class, 'showAddFoto']);
@@ -54,6 +54,5 @@ Route::middleware([CheckLoginStatus::class])->group(function () {
         });
     });
 });
-
 
 // Route::get('test', [FotoController::class, 'downloader']);

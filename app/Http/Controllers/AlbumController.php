@@ -8,6 +8,12 @@ use Illuminate\Support\Facades\Session;
 
 class AlbumController extends Controller
 {
+    public function checkUser()
+    {
+        if (!Session::has('user_id')) {
+            return redirect()->route('dashboard');
+        }
+    }
     public function showAlbum()
     {
         $album = Album::where('id_user', Session::get('user_id'))

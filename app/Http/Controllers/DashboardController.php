@@ -16,10 +16,18 @@ class DashboardController extends Controller
     public function showDashboard(Request $request)
     {
         $filter = $request->query('filter');
+        $search = $request->query('search');
 
         $query = Foto::with('user')
             ->withCount('like', 'komen')
             ->with('like');
+
+        if ($search) {
+            $query->where(function ($q) use ($search) {
+                $q->where('judul_foto', 'LIKE', '%' . $search . '%')
+                    ->orWhere('deskripsi_foto', 'LIKE', '%' . $search . '%');
+            });
+        }
 
         switch ($filter) {
             case 'likes_desc':
@@ -55,20 +63,8 @@ class DashboardController extends Controller
             return $foto;
         });
 
-        $foto_most_liked = Foto::with('user')
-            ->withCount('like')
-            ->with('like')
-            ->orderBy('like_count', 'desc')
-            ->take(6)
-            ->get()
-            ->map(function ($foto) {
-                $foto->is_liked = $foto->like->contains('id_user', Session::get('user_id')) ? true : false;
-                return $foto;
-            });
-
-        return view('dashboard', compact('foto', 'foto_most_liked'));
+        return view('dashboard', compact('foto'));
     }
-
 
     public function showAdminDashboard()
     {

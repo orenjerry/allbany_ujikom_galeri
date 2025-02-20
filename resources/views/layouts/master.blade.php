@@ -16,7 +16,7 @@
 </head>
 
 <body class="bg-gray-100 font-sans leading-normal tracking-normal flex flex-col min-h-screen">
-    @if (Session::has('user_id'))
+    @if (!Request::is('auth/*'))
         @include('layouts.header')
     @endif
 
@@ -25,7 +25,8 @@
     </main>
 
     @stack('scripts')
-    @if (Session::has('user_id'))
+
+    @if (!Request::is('auth/*'))
         @include('layouts.footer')
     @endif
 </body>

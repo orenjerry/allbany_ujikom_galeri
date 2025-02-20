@@ -44,6 +44,11 @@ Login
                             {{ session('success') }}
                         </div>
                     @endif
+                    @if (session('need_login'))
+                        <div class="mt-4 bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded">
+                            {{ session('need_login') }}
+                        </div>
+                    @endif
                 </div>
             </div>
         </div>
