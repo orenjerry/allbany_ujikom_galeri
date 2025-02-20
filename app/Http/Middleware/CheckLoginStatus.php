@@ -20,7 +20,7 @@ class CheckLoginStatus
         }
 
         if (!session()->has('user_id')) {
-            return redirect()->route('auth.login.show')->with(['need_login' => 'You must be logged in to access this page.']);
+            return redirect()->route('auth.login.show')->with(['need_login' => 'You must be logged in to do that.']);
         }
 
         if ($request->is('admin/*')) {

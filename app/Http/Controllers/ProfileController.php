@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Album;
 use App\Models\Foto;
 use App\Models\Users;
 use Illuminate\Http\Request;
@@ -70,14 +71,25 @@ class ProfileController extends Controller
         return redirect()->route('profile');
     }
 
-    public function insight()
+    public function insight(Request $request)
     {
         $user = Users::where('id', Session::get('user_id'))->first();
 
-        $fotos = Foto::with(['like', 'komen'])
-            ->where('id_user', Session::get('user_id'))
-            ->get();
+        // Get date range from request (if provided)
+        $startDate = $request->input('start_date');
+        $endDate = $request->input('end_date');
 
+        // Base query for photos with optional date filter
+        $fotosQuery = Foto::with(['like', 'komen'])
+            ->where('id_user', Session::get('user_id'));
+
+        if ($startDate && $endDate) {
+            $fotosQuery->whereBetween('created_at', [$startDate, $endDate]);
+        }
+
+        $fotos = $fotosQuery->get();
+
+        // Calculate total likes & comments
         $totalLikes = 0;
         $totalComments = 0;
 
@@ -86,8 +98,14 @@ class ProfileController extends Controller
             $totalComments += $foto->komen->count();
         }
 
+        $totalAlbums = Album::where('id_user', Session::get('user_id'))->count();
+        $totalFotos = $fotos->count();
+
         $topLikedPhotos = Foto::with('like')
             ->where('id_user', Session::get('user_id'))
+            ->when($startDate && $endDate, function ($query) use ($startDate, $endDate) {
+                $query->whereBetween('created_at', [$startDate, $endDate]);
+            })
             ->withCount('like')
             ->orderBy('like_count', 'desc')
             ->take(5)
@@ -95,6 +113,9 @@ class ProfileController extends Controller
 
         $topCommentedPhotos = Foto::with('komen')
             ->where('id_user', Session::get('user_id'))
+            ->when($startDate && $endDate, function ($query) use ($startDate, $endDate) {
+                $query->whereBetween('created_at', [$startDate, $endDate]);
+            })
             ->withCount('komen')
             ->orderBy('komen_count', 'desc')
             ->take(5)
@@ -112,6 +133,10 @@ class ProfileController extends Controller
                     ->whereColumn('allbany_foto_komentar.id_user', '!=', 'allbany_foto.id_user');
             })
             ->where('allbany_foto.id_user', Session::get('user_id'))
+            ->when($startDate && $endDate, function ($query) use ($startDate, $endDate) {
+                $query->whereBetween('allbany_foto_like.created_at', [$startDate, $endDate])
+                    ->whereBetween('allbany_foto_komentar.created_at', [$startDate, $endDate]);
+            })
             ->select(
                 'allbany_user.id',
                 'allbany_user.username',
@@ -123,16 +148,19 @@ class ProfileController extends Controller
             ->orderByRaw('(COUNT(DISTINCT allbany_foto_like.id) + COUNT(DISTINCT allbany_foto_komentar.id)) DESC')
             ->take(5)
             ->get();
-        // dd($topInteractors);
 
         return view('profile.insight', compact(
             'user',
             'fotos',
             'totalLikes',
             'totalComments',
+            'totalAlbums',
+            'totalFotos',
             'topLikedPhotos',
             'topCommentedPhotos',
-            'topInteractors'
+            'topInteractors',
+            'startDate',
+            'endDate'
         ));
     }
 }
