@@ -6,15 +6,16 @@
         <h1 class="text-3xl font-bold text-center mb-6 text-gray-800">Profile Insights</h1>
 
         <!-- Date Range Filter -->
-        <form method="GET" action="{{ route('insight') }}"
-            class="mb-6 flex flex-wrap items-center justify-center gap-4">
+        <form method="GET" action="{{ route('insight') }}" class="mb-6 flex flex-wrap items-center justify-center gap-4">
             <div>
                 <label class="font-semibold text-gray-700">Start Date:</label>
-                <input type="date" name="start_date" value="{{ request('start_date') }}" max="{{ date('Y-m-d') }}" class="border p-2 rounded-lg">
+                <input type="date" name="start_date" value="{{ request('start_date') }}" max="{{ date('Y-m-d') }}"
+                    class="border p-2 rounded-lg">
             </div>
             <div>
                 <label class="font-semibold text-gray-700">End Date:</label>
-                <input type="date" name="end_date" value="{{ request('end_date') }}" max="{{ date('Y-m-d') }}" class="border p-2 rounded-lg">
+                <input type="date" name="end_date" value="{{ request('end_date') }}" max="{{ date('Y-m-d') }}"
+                    class="border p-2 rounded-lg">
             </div>
             <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600 transition">
                 Apply Filter
@@ -46,11 +47,13 @@
                 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                     @foreach ($topLikedPhotos as $photo)
                         <div class="bg-white rounded-lg shadow-lg overflow-hidden hover:shadow-xl transition">
-                            <img src="{{ asset($photo->lokasi_file) }}" class="w-full h-48 object-cover">
-                            <div class="p-4">
-                                <h3 class="text-lg font-semibold">{{ $photo->judul_foto }}</h3>
-                                <p class="text-gray-600 text-sm">👍 {{ $photo->like_count }} Likes</p>
-                            </div>
+                            <a href="{{ route('detailFoto', $photo->id) }}">
+                                <img src="{{ asset($photo->lokasi_file) }}" class="w-full h-48 object-cover">
+                                <div class="p-4">
+                                    <h3 class="text-lg font-semibold">{{ $photo->judul_foto }}</h3>
+                                    <p class="text-gray-600 text-sm">👍 {{ $photo->like_count }} Likes</p>
+                                </div>
+                            </a>
                         </div>
                     @endforeach
                 </div>
@@ -65,11 +68,13 @@
                 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                     @foreach ($topCommentedPhotos as $photo)
                         <div class="bg-white rounded-lg shadow-lg overflow-hidden hover:shadow-xl transition">
-                            <img src="{{ asset($photo->lokasi_file) }}" class="w-full h-48 object-cover">
-                            <div class="p-4">
-                                <h3 class="text-lg font-semibold">{{ $photo->judul_foto }}</h3>
-                                <p class="text-gray-600 text-sm">💬 {{ $photo->komen_count }} Comments</p>
-                            </div>
+                            <a href="{{ route('detailFoto', $photo->id) }}">
+                                <img src="{{ asset($photo->lokasi_file) }}" class="w-full h-48 object-cover">
+                                <div class="p-4">
+                                    <h3 class="text-lg font-semibold">{{ $photo->judul_foto }}</h3>
+                                    <p class="text-gray-600 text-sm">💬 {{ $photo->komen_count }} Comments</p>
+                                </div>
+                            </a>
                         </div>
                     @endforeach
                 </div>
